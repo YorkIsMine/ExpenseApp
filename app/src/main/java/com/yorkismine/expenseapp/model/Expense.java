@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "expense_table")
+@Entity(tableName = "expense_table_v1")
 public class Expense {
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
@@ -18,12 +18,12 @@ public class Expense {
     private String description;
 
     @ColumnInfo(name = "expense_sum")
-    private int sum;
+    private String sum;
 
     @Ignore
     public Expense(){}
 
-    public Expense(String title, String description, int sum) {
+    public Expense(String title, String description, String sum) {
         this.title = title;
         this.description = description;
         this.sum = sum;
@@ -53,11 +53,11 @@ public class Expense {
         this.description = description;
     }
 
-    public int getSum() {
+    public String getSum() {
         return sum;
     }
 
-    public void setSum(int sum) {
+    public void setSum(String sum) {
         this.sum = sum;
     }
 }

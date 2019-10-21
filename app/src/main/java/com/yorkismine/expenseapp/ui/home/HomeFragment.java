@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -71,11 +70,12 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK){ //ToDo replace to constant
+        if (requestCode == 1 && resultCode == RESULT_OK) { //ToDo replace to constant
             String title = data.getStringExtra(AddExpenseActivity.EXTRA_TITLE);
             String desc = data.getStringExtra(AddExpenseActivity.EXTRA_DESC);
+            String sum = data.getStringExtra(AddExpenseActivity.EXTRA_SUM);
 
-            Expense expense = new Expense(title, desc, 0);
+            Expense expense = new Expense(title, desc, sum);
             expenseViewModel.insert(expense);
         }
     }

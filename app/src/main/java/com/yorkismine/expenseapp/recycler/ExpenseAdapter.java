@@ -22,15 +22,20 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
     public ExpenseHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.expense_item, parent, false);
-
         return new ExpenseHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ExpenseHolder holder, int position) {
         Expense expense = expenses.get(position);
-        holder.textViewTitle.setText(expense.getTitle());
-        holder.textViewDesc.setText(expense.getDescription());
+        holder.tvTitle.setText(expense.getTitle());
+        holder.tvDesc.setText(expense.getDescription());
+        if (expense.getSum() == null) {
+            holder.tvSum.setText("0");
+        } else {
+            holder.tvSum.setText(expense.getSum());
+        }
+
     }
 
     @Override
@@ -43,15 +48,16 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         notifyDataSetChanged(); //ToDo optimize memory
     }
 
-
     public class ExpenseHolder extends RecyclerView.ViewHolder{
-        private TextView textViewTitle;
-        private TextView textViewDesc;
+        private TextView tvTitle;
+        private TextView tvDesc;
+        private TextView tvSum;
 
         public ExpenseHolder(@NonNull View itemView) {
             super(itemView);
-            textViewTitle = itemView.findViewById(R.id.text_view_item_title);
-            textViewDesc = itemView.findViewById(R.id.text_view_item_desc);
+            tvTitle = itemView.findViewById(R.id.item_tv_title);
+            tvDesc = itemView.findViewById(R.id.item_tv_desc);
+            tvSum = itemView.findViewById(R.id.item_tv_sum);
         }
     }
 }

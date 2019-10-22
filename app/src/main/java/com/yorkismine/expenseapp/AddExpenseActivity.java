@@ -12,12 +12,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
+
 public class AddExpenseActivity extends AppCompatActivity {
-
-    public static final String EXTRA_TITLE = "TITLE";
-    public static final String EXTRA_DESC = "DESC";
-    public static final String EXTRA_SUM = "SUM";
-
 
     private FloatingActionButton fab;
     private EditText edtTitle;
@@ -53,12 +52,12 @@ public class AddExpenseActivity extends AppCompatActivity {
         });
     }
 
-    private void saveExpense(){
+    private void saveExpense() {
         String title = edtTitle.getText().toString();
         String desc = edtDesc.getText().toString();
         String sum = edtSum.getText().toString();
 
-        if(title.trim().isEmpty() || desc.trim().isEmpty() || sum.equals("0")){
+        if (title.trim().isEmpty() || desc.trim().isEmpty() || sum.equals("0")) {
             Toast.makeText(this, "Insert all fields!", Toast.LENGTH_LONG)
                     .show();
             return;
@@ -78,9 +77,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sum == 0){
+                if (sum == 0) {
                     sum++;
-                }else {
+                } else {
                     sum = sum + 1;
                     String s = String.valueOf(sum);
                     edtSum.setText(s);
@@ -92,7 +91,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sum > 0){
+                if (sum > 0) {
                     sum = sum - 1;
                     String s = String.valueOf(sum);
                     edtSum.setText(s);

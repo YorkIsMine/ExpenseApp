@@ -45,7 +45,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
 
     public void setExpenses(List<Expense> expenses){
         this.expenses = expenses;
-        notifyDataSetChanged(); //ToDo optimize memory
+        notifyDataSetChanged(); //ToDo optimize memory --> ???
     }
 
     public class ExpenseHolder extends RecyclerView.ViewHolder{

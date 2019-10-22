@@ -30,6 +30,7 @@ import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CODE_REQUEST;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
@@ -105,8 +106,9 @@ public class HomeFragment extends Fragment {
             String title = data.getStringExtra(EXTRA_TITLE);
             String desc = data.getStringExtra(EXTRA_DESC);
             String sum = data.getStringExtra(EXTRA_SUM);
+            String date = data.getStringExtra(EXTRA_DATE);
 
-            Expense expense = new Expense(title, desc, sum);
+            Expense expense = new Expense(title, desc, sum, date);
             expenseViewModel.insert(expense);
         }
     }

@@ -14,6 +14,8 @@ import com.yorkismine.expenseapp.model.Expense;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
+
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseHolder>{
     private List<Expense> expenses = new ArrayList<>();
 
@@ -30,10 +32,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         Expense expense = expenses.get(position);
         holder.tvTitle.setText(expense.getTitle());
         holder.tvDesc.setText(expense.getDescription());
+        holder.tvDate.setText(expense.getDate());
+        String sum = "";
         if (expense.getSum() == null) {
-            holder.tvSum.setText("0");
+            sum = "0 "+EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
         } else {
-            holder.tvSum.setText(expense.getSum());
+            sum = expense.getSum()+" "+EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
         }
 
     }
@@ -52,12 +58,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         private TextView tvTitle;
         private TextView tvDesc;
         private TextView tvSum;
+        private TextView tvDate;
 
         public ExpenseHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.item_tv_title);
             tvDesc = itemView.findViewById(R.id.item_tv_desc);
             tvSum = itemView.findViewById(R.id.item_tv_sum);
+            tvDate = itemView.findViewById(R.id.item_tv_date);
         }
     }
 }

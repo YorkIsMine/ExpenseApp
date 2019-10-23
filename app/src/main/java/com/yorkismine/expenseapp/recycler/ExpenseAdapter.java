@@ -1,5 +1,6 @@
 package com.yorkismine.expenseapp.recycler;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.model.Expense;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_RUB;
 
-public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseHolder>{
+public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseHolder> {
+
+    private String sum = "";
     private List<Expense> expenses = new ArrayList<>();
 
     @NonNull
@@ -32,13 +37,19 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         Expense expense = expenses.get(position);
         holder.tvTitle.setText(expense.getTitle());
         holder.tvDesc.setText(expense.getDescription());
-        holder.tvDate.setText(expense.getDate());
-        String sum = "";
+
+        //Get date in  milliseconds
+        long dateInMillis = Long.parseLong(expense.getDate());
+        //Convert date to date format
+        Date date = new Date(dateInMillis);
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("dd MMM yy");
+        holder.tvDate.setText(s.format(date));
+
         if (expense.getSum() == null) {
-            sum = "0 "+EXTRA_CURRENCY;
+            sum = "0 " + EXTRA_CURRENCY_RUB;
             holder.tvSum.setText(sum);
         } else {
-            sum = expense.getSum()+" "+EXTRA_CURRENCY;
+            sum = expense.getSum() + " " + EXTRA_CURRENCY_RUB;
             holder.tvSum.setText(sum);
         }
 
@@ -49,12 +60,12 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         return expenses.size();
     }
 
-    public void setExpenses(List<Expense> expenses){
+    public void setExpenses(List<Expense> expenses) {
         this.expenses = expenses;
-        notifyDataSetChanged(); //ToDo optimize memory --> ???
+        notifyDataSetChanged();
     }
 
-    public class ExpenseHolder extends RecyclerView.ViewHolder{
+    public class ExpenseHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle;
         private TextView tvDesc;
         private TextView tvSum;

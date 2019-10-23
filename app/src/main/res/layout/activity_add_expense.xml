@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,52 +28,35 @@
 
         <CalendarView
             android:id="@+id/add_cv_date"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:paddingHorizontal="8dp"
             tools:targetApi="o">
 
             <TextView
                 android:id="@+id/add_tv_sum"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Sum: "
                 android:textSize="18sp" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sum_btn_plus"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:text="+"
-                android:textSize="18sp" />
-
 
             <EditText
                 android:id="@+id/add_edt_sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:importantForAutofill="no"
+                android:hint="0"
                 android:inputType="numberDecimal"
-                android:text="0"
                 tools:targetApi="o" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sum_btn_minus"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:text="-"
-                android:textSize="18sp" />
-
         </LinearLayout>
-
 
     </LinearLayout>
 

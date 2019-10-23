@@ -25,6 +25,7 @@ import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
 import com.yorkismine.expenseapp.recycler.ExpenseAdapter;
+import com.yorkismine.expenseapp.utils.CurrentDate;
 
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                //TODO make a sort by choosing date
             }
 
             @Override

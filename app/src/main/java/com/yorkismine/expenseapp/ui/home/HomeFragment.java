@@ -5,6 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,17 +20,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.AddExpenseActivity;
+import com.yorkismine.expenseapp.MainActivity;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
 import com.yorkismine.expenseapp.recycler.ExpenseAdapter;
+import com.yorkismine.expenseapp.utils.CurrentDate;
 
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CODE_REQUEST;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
 
 public class HomeFragment extends Fragment {
 
+    private ArrayAdapter mAdapter;
     private HomeViewModel homeViewModel;
     private ExpenseViewModel expenseViewModel;
 
@@ -34,13 +47,34 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-//        final TextView textView = root.findViewById(R.id.text_home);
-//        homeViewModel.getText().observe(this, new Observer<String>() {
-//            @Override
-//            public void onChanged(@Nullable String s) {
-//                textView.setText(s);
-//            }
-//        });
+
+
+        //Define dropdown Spinner
+        String[] data = {"Month", "Day", "Week", "Year"};
+        mAdapter = new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {
+            //Set textColor
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView tv = (TextView) super.getView(position, convertView, parent);
+                tv.setTextColor(parent.getResources().getColor(R.color.colorPrimary));
+                return tv;
+            }
+        };
+
+        Spinner spinner = root.findViewById(R.id.home_spinner);
+        spinner.setAdapter(mAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+                //TODO make a sort by choosing date
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -60,7 +94,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), AddExpenseActivity.class);
-                startActivityForResult(intent, 1); //ToDo replace to constant
+                startActivityForResult(intent, EXTRA_CODE_REQUEST);
             }
         });
         return root;
@@ -70,12 +104,13 @@ public class HomeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && resultCode == RESULT_OK) { //ToDo replace to constant
-            String title = data.getStringExtra(AddExpenseActivity.EXTRA_TITLE);
-            String desc = data.getStringExtra(AddExpenseActivity.EXTRA_DESC);
-            String sum = data.getStringExtra(AddExpenseActivity.EXTRA_SUM);
+        if (requestCode == EXTRA_CODE_REQUEST && resultCode == RESULT_OK) {
+            String title = data.getStringExtra(EXTRA_TITLE);
+            String desc = data.getStringExtra(EXTRA_DESC);
+            String sum = data.getStringExtra(EXTRA_SUM);
+            String date = data.getStringExtra(EXTRA_DATE);
 
-            Expense expense = new Expense(title, desc, sum);
+            Expense expense = new Expense(title, desc, sum, date);
             expenseViewModel.insert(expense);
         }
     }

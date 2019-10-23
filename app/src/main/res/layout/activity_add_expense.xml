@@ -26,47 +26,37 @@
             android:hint="Description"
             android:inputType="textImeMultiLine" />
 
+        <CalendarView
+            android:id="@+id/add_cv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="8dp"
+            android:gravity="center_horizontal"
             android:orientation="horizontal"
+            android:paddingHorizontal="8dp"
             tools:targetApi="o">
 
             <TextView
                 android:id="@+id/add_tv_sum"
-                android:layout_weight="1"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="Sum: "/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sum_btn_plus"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:textSize="18sp"
-                android:text="+"/>
+                android:text="Sum: "
+                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/add_edt_sum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:text="0"
+                android:hint="0"
                 android:inputType="numberDecimal"
-                tools:targetApi="o"
-                android:importantForAutofill="no" />
-
-            <com.google.android.material.button.MaterialButton
-                android:textSize="18sp"
-                android:id="@+id/sum_btn_minus"
-                android:layout_width="64dp"
-                android:layout_height="wrap_content"
-                android:text="-"/>
+                tools:targetApi="o" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 
@@ -77,5 +67,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="28dp"
         android:src="@drawable/ic_check" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

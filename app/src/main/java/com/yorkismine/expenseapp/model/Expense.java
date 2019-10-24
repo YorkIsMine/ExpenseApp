@@ -16,9 +16,10 @@ public class Expense {
 
     @ColumnInfo(name = "expense_description")
     private String description;
-
+    //TODO change to double
     @ColumnInfo(name = "expense_sum")
     private int sum;
+    //TODO add data as String
 
     @Ignore
     public Expense(){}

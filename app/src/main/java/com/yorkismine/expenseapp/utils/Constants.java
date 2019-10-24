@@ -9,6 +9,4 @@ public class Constants{
     public static final String EXTRA_CURRENCY_USD = "$";
     public static final String EXTRA_CURRENCY_EURO = "€";
     public static final int EXTRA_CODE_REQUEST = 1;
-    //Args
-    public static final String ARG_DATE = "date";
 }

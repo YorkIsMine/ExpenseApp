@@ -3,6 +3,7 @@ package com.yorkismine.expenseapp.ui.home;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,9 @@ import com.yorkismine.expenseapp.recycler.ExpenseAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +56,7 @@ public class HomeFragment extends Fragment {
 
 
         //Define dropdown Spinner
-        String[] data = {"Month", "Day", "Week", "Year"};
+        String[] data = {"Month", "Day", "Week", "Year", "Sort by sum"};
         mAdapter = new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {
             //Set textColor
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -79,7 +83,7 @@ public class HomeFragment extends Fragment {
                 expenseViewModel = ViewModelProviders.of(HomeFragment.this).get(ExpenseViewModel.class);
                 expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
                     @Override
-                    public void onChanged(List<Expense> expenses) {
+                    public void onChanged(final List<Expense> expenses) {
                         List<Expense> byDate = new ArrayList<>();
                         Date currDate = new Date();
 
@@ -87,6 +91,7 @@ public class HomeFragment extends Fragment {
 
                             String currentDate = parent.getItemAtPosition(position).toString();
                             String fromItem = expenses.get(i).getDate();
+                            String fromItemSum = expenses.get(i).getSum();
 
                             switch (currentDate) {
                                 case "Month": {
@@ -120,6 +125,17 @@ public class HomeFragment extends Fragment {
                                         byDate.add(expenses.get(i));
                                     }
                                     break;
+                                }
+                                case "Sort by sum":{
+                                    Collections.sort(byDate, new Comparator<Expense>() {
+                                        @Override
+                                        public int compare(Expense expense, Expense t1) {
+                                            Log.e("ERROR_TEST", "" + t1.getSum());
+                                            int sum1 = Integer.parseInt(expense.getSum());
+                                            int sum2 = Integer.parseInt(t1.getSum());
+                                            return sum1 - sum2;
+                                        }
+                                    });
                                 }
                             }
                         }

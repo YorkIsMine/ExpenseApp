@@ -74,6 +74,11 @@ public class AddExpenseActivity extends AppCompatActivity {
         String desc = edtDesc.getText().toString();
         String sum = edtSum.getText().toString();
 
+        if (sum.trim().length() > 10) {
+            Toast.makeText(this, "Max sum 10 digits!", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
         if (dateInMillis.trim().isEmpty() || dateInMillis.trim().equals(" ")) {
             dateInMillis = "01.01.19";
         }

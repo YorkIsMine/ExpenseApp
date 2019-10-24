@@ -38,5 +38,4 @@ public class ExpenseViewModel extends AndroidViewModel {
         return allExpenses;
     }
 
-
 }

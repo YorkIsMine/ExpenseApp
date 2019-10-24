@@ -2,26 +2,59 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/text_view_item_title"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="Hello"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:padding="8dp"
+            tools:targetApi="o">
 
-        <TextView
-            android:id="@+id/text_view_item_desc"
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/item_tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                tools:text="Hello" />
+
+            <TextView
+                android:id="@+id/item_tv_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                tools:text="DESC" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
-            tools:text="DESC"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+            <TextView
+                android:textAlignment="textStart"
+                android:id="@+id/item_tv_date"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="12 sep 2019"/>
+            <TextView
+                android:id="@+id/item_tv_sum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:text="12 $"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        </LinearLayout>
+
 
     </LinearLayout>
 

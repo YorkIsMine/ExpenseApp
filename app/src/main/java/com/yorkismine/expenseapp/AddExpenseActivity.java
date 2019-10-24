@@ -1,12 +1,18 @@
 package com.yorkismine.expenseapp;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -29,12 +36,12 @@ public class AddExpenseActivity extends AppCompatActivity {
     private EditText edtTitle;
     private EditText edtDesc;
     private EditText edtSum;
-    private CalendarView cvDate;
+    private TextView cvDate;
     private String date;
     private String dateInMillis;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_expense);
         setTitle("Add Expense");
@@ -42,21 +49,41 @@ public class AddExpenseActivity extends AppCompatActivity {
         edtTitle = findViewById(R.id.add_edt_title);
         edtDesc = findViewById(R.id.add_edt_desc);
         edtSum = findViewById(R.id.add_edt_sum);
-        cvDate = findViewById(R.id.add_cv_date);
+        cvDate = findViewById(R.id.add_date);
 
         //Getting anf Setting date from CalendarView
-        cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//        cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+//
+//                GregorianCalendar calendar = new GregorianCalendar(year, month, dayOfMonth);
+////                Date hireDay = calendar.getTime();
+////                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yy");
+////                date = sdf.format(hireDay);
+//                dateInMillis = String.valueOf(calendar.getTimeInMillis());
+//
+////                Log.d("TAG", "Date clicked: " + sdf.format(hireDay));
+//                Log.d("TAG", "Date clicked in milliseconds: " + dateInMillis);
+//            }
+//        });
+
+        //ToDo create custom dialog datePicker
+        cvDate.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+            public void onClick(View view) {
+                final GregorianCalendar calendar = (GregorianCalendar) Calendar.getInstance();
+                DatePickerDialog dpd = new DatePickerDialog(AddExpenseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+                        Calendar mCalendar = new GregorianCalendar(i, i1, i2);
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+                        date = sdf.format(mCalendar.getTime());
+                        dateInMillis = String.valueOf(mCalendar.getTimeInMillis());
+                        cvDate.setText(date);
+                    }
+                }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
-                GregorianCalendar calendar = new GregorianCalendar(year, month, dayOfMonth);
-//                Date hireDay = calendar.getTime();
-//                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yy");
-//                date = sdf.format(hireDay);
-                dateInMillis = String.valueOf(calendar.getTimeInMillis());
-
-//                Log.d("TAG", "Date clicked: " + sdf.format(hireDay));
-                Log.d("TAG", "Date clicked in milliseconds: " + dateInMillis);
+                dpd.show();
             }
         });
 

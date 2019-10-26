@@ -23,10 +23,9 @@ public class Expense {
     @ColumnInfo(name = "expense_date")
     private String date;
 
-
-
     @Ignore
-    public Expense(){}
+    public Expense() {
+    }
 
     public Expense(String title, String description, String sum, String date) {
         this.title = title;
@@ -42,6 +41,7 @@ public class Expense {
     public void setDate(String date) {
         this.date = date;
     }
+
     public int getId() {
         return id;
     }

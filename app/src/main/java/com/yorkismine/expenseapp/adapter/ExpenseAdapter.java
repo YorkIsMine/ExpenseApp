@@ -1,4 +1,4 @@
-package com.yorkismine.expenseapp.recycler;
+package com.yorkismine.expenseapp.adapter;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;

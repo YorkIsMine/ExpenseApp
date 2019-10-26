@@ -6,12 +6,18 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +25,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.yorkismine.expenseapp.dialog.TypeDialog;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
@@ -39,9 +48,23 @@ public class AddExpenseActivity extends AppCompatActivity {
     private EditText edtSum;
     private TextView cvDate;
     private TextView typeExpense;
+    private ImageView typeImgExpense;
 
     private String date;
     private String dateInMillis;
+
+//    private String[] strings = new String[]{
+//      "adada",
+//      "dadadadada",
+//      "dadadada",
+//      "HELLLO!!!!!!!",
+//      "adada",
+//      "sfseasdsf",
+//      "lskfkslfksf",
+//      "dadada",
+//      "kuku",
+//      "Item"
+//    };
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -54,7 +77,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         edtSum = findViewById(R.id.add_edt_sum);
         cvDate = findViewById(R.id.add_date);
         typeExpense = findViewById(R.id.add_type);
-
+        typeImgExpense = findViewById(R.id.add_icon_type);
         //Getting anf Setting date from CalendarView
 //        cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
 //            @Override
@@ -71,10 +94,40 @@ public class AddExpenseActivity extends AppCompatActivity {
 //            }
 //        });
 
+
+
+
+//        typeExpense.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                GridView gridView = new GridView(AddExpenseActivity.this);
+//                final AlertDialog.Builder builder = new AlertDialog.Builder(AddExpenseActivity.this);
+//                builder.setView(gridView);
+//                builder.setTitle("Choose category of expense:");
+//                gridView.setNumColumns(2);
+//                final AlertDialog alertDialog = builder.create();
+//                ArrayAdapter<String> adapter = new ArrayAdapter<>(AddExpenseActivity.this, android.R.layout.simple_list_item_1, strings);
+//                gridView.setAdapter(adapter);
+//                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                        Toast.makeText(AddExpenseActivity.this,
+//                                "You tapped" + position, Toast.LENGTH_LONG).show();
+//                        typeExpense.setText(position + "");
+//                        alertDialog.dismiss();
+//                    }
+//                });
+//
+//
+//                alertDialog.show();
+//            }
+//        });
+
         typeExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                TypeDialog dialog = new TypeDialog(typeExpense, typeImgExpense);
+                dialog.show(getSupportFragmentManager(), "TAG");
             }
         });
 
@@ -111,6 +164,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         String title = edtTitle.getText().toString();
         String desc = edtDesc.getText().toString();
         String sum = edtSum.getText().toString();
+        String typeDesc = typeExpense.getText().toString();
 
         if (sum.trim().length() > 10) {
             Toast.makeText(this, "Max sum 10 digits!", Toast.LENGTH_SHORT)

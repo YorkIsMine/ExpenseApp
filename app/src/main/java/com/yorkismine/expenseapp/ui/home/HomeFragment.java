@@ -25,12 +25,10 @@ import com.yorkismine.expenseapp.AddExpenseActivity;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
-import com.yorkismine.expenseapp.model.TypeOfExpense;
-import com.yorkismine.expenseapp.recycler.ExpenseAdapter;
+import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;

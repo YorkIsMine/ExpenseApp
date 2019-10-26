@@ -1,7 +1,9 @@
 package com.yorkismine.expenseapp.model;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.EditText;
 
 import androidx.lifecycle.LiveData;
 
@@ -10,9 +12,10 @@ import java.util.List;
 public class ExpenseRepository {
     private LiveData<List<Expense>> allExpenses;
     private ExpenseDAO expenseDAO;
+    private ExpenseRepository instance;
 
-    public ExpenseRepository(Application application){
-        ExpenseDatabase database = ExpenseDatabase.getInstance(application);
+    public ExpenseRepository(Context context){
+        ExpenseDatabase database = ExpenseDatabase.getInstance(context);
         expenseDAO = database.expenseDAO();
         allExpenses = expenseDAO.getAllExpenses();
     }

@@ -11,7 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -26,6 +30,7 @@ public class StatisticsFragment extends Fragment {
 
     private StatisticsViewModel dashboardViewModel;
     private PieChart pieChart;
+    private BarChart barChart;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -36,9 +41,30 @@ public class StatisticsFragment extends Fragment {
             @Override
             public void onChanged(List<Expense> expenses) {
                 setupPieChart(root, expenses);
+                setupBarChart(root, expenses);
             }
         });
         return root;
+    }
+
+    private void setupBarChart(View view, List<Expense> expenses) {
+        List<BarEntry> barEntries = new ArrayList<>();
+        for (int i = 0; i < expenses.size(); i++) {
+            float y = Float.parseFloat(expenses.get(i).getSum());
+            String x = expenses.get(i).getTitle();
+            barEntries.add(new BarEntry(i, y));
+        }
+        BarDataSet dataSet = new BarDataSet(barEntries, "");
+        dataSet.calcMinMax();
+        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+//        dataSet.setDrawValues(true);
+        dataSet.setValueTextSize(15f);
+        BarData barData = new BarData(dataSet);
+        barChart = view.findViewById(R.id.bar_chart);
+        barChart.setFitBars(true);
+        barChart.setData(barData);
+        barChart.invalidate();
+        barChart.animateY(500);
     }
 
     // TODO set min size of item on pie
@@ -51,19 +77,21 @@ public class StatisticsFragment extends Fragment {
             String x = expenses.get(i).getTitle();
             pieEntries.add(new PieEntry(y, x));
         }
-        PieDataSet dataSet = new PieDataSet(pieEntries, "Expenses stats");
-        dataSet.setSliceSpace(2.0f);
+        String[] colors = {"#FFF000", "#CCCFFF"};
+        PieDataSet dataSet = new PieDataSet(pieEntries, "");
+        dataSet.setSliceSpace(1f);
         dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        dataSet.setValueTextSize(18f);
+        dataSet.setDrawValues(false);
+        dataSet.setSelectionShift(10f);
 
         PieData pieData = new PieData(dataSet);
         // Get the chart
         pieChart = view.findViewById(R.id.pie_chart);
-        pieChart.setHoleRadius(24f);
+        pieChart.setHoleRadius(20f);
+        pieChart.setMinAngleForSlices(30f);
         pieChart.setTransparentCircleAlpha(0);
-        pieChart.setCenterText("Expenses");
-        pieChart.setCenterTextSize(18f);
         pieChart.setData(pieData);
         pieChart.invalidate();
+        pieChart.animateY(500);
     }
 }

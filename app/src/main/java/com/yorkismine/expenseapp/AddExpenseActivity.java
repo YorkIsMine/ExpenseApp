@@ -29,6 +29,7 @@ import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TYPE;
 
 public class AddExpenseActivity extends AppCompatActivity {
 
@@ -37,6 +38,8 @@ public class AddExpenseActivity extends AppCompatActivity {
     private EditText edtDesc;
     private EditText edtSum;
     private TextView cvDate;
+    private TextView typeExpense;
+
     private String date;
     private String dateInMillis;
 
@@ -50,6 +53,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         edtDesc = findViewById(R.id.add_edt_desc);
         edtSum = findViewById(R.id.add_edt_sum);
         cvDate = findViewById(R.id.add_date);
+        typeExpense = findViewById(R.id.add_type);
 
         //Getting anf Setting date from CalendarView
 //        cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -66,6 +70,13 @@ public class AddExpenseActivity extends AppCompatActivity {
 //                Log.d("TAG", "Date clicked in milliseconds: " + dateInMillis);
 //            }
 //        });
+
+        typeExpense.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         //ToDo create custom dialog datePicker
         cvDate.setOnClickListener(new View.OnClickListener() {

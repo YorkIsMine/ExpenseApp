@@ -25,6 +25,7 @@ import com.yorkismine.expenseapp.AddExpenseActivity;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
+import com.yorkismine.expenseapp.model.TypeOfExpense;
 import com.yorkismine.expenseapp.recycler.ExpenseAdapter;
 
 import java.text.SimpleDateFormat;
@@ -56,7 +57,7 @@ public class HomeFragment extends Fragment {
 
 
         //Define dropdown Spinner
-        String[] data = {"Month", "Day", "Week", "Year", "Sort by sum"};
+        final String[] data = {"Month", "Day", "Week", "Year", "Sort by sum"};
         mAdapter = new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {
             //Set textColor
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -91,7 +92,6 @@ public class HomeFragment extends Fragment {
 
                             String currentDate = parent.getItemAtPosition(position).toString();
                             String fromItem = expenses.get(i).getDate();
-                            String fromItemSum = expenses.get(i).getSum();
 
                             switch (currentDate) {
                                 case "Month": {
@@ -127,15 +127,17 @@ public class HomeFragment extends Fragment {
                                     break;
                                 }
                                 case "Sort by sum":{
+                                    byDate = expenses;
                                     Collections.sort(byDate, new Comparator<Expense>() {
                                         @Override
                                         public int compare(Expense expense, Expense t1) {
-                                            Log.e("ERROR_TEST", "" + t1.getSum());
+                                            Log.e("BLA_!", "" + t1.getSum());
                                             int sum1 = Integer.parseInt(expense.getSum());
                                             int sum2 = Integer.parseInt(t1.getSum());
                                             return sum1 - sum2;
                                         }
                                     });
+                                    break;
                                 }
                             }
                         }

@@ -1,5 +1,6 @@
 package com.yorkismine.expenseapp.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,13 +21,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.AddExpenseActivity;
-import com.yorkismine.expenseapp.MainActivity;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
 import com.yorkismine.expenseapp.recycler.ExpenseAdapter;
-import com.yorkismine.expenseapp.utils.CurrentDate;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
@@ -62,30 +64,73 @@ public class HomeFragment extends Fragment {
 
         Spinner spinner = root.findViewById(R.id.home_spinner);
         spinner.setAdapter(mAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-                //TODO make a sort by choosing date
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
 
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         final ExpenseAdapter adapter = new ExpenseAdapter();
         recyclerView.setAdapter(adapter);
 
-        expenseViewModel = ViewModelProviders.of(this).get(ExpenseViewModel.class);
-        expenseViewModel.getAllExpenses().observe(this, new Observer<List<Expense>>() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onChanged(List<Expense> expenses) {
-                adapter.setExpenses(expenses);
+            public void onItemSelected(final AdapterView<?> parent, View view, final int position, long id) {
+
+                Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+
+                expenseViewModel = ViewModelProviders.of(HomeFragment.this).get(ExpenseViewModel.class);
+                expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
+                    @Override
+                    public void onChanged(List<Expense> expenses) {
+                        List<Expense> byDate = new ArrayList<>();
+                        Date currDate = new Date();
+
+                        for (int i = 0; i < expenses.size(); i++) {
+
+                            String currentDate = parent.getItemAtPosition(position).toString();
+                            String fromItem = expenses.get(i).getDate();
+
+                            switch (currentDate) {
+                                case "Month": {
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat monthS = new SimpleDateFormat("MM");
+                                    Date dateFrom = new Date(Long.parseLong(fromItem));
+                                    if (monthS.format(dateFrom).equals(monthS.format(currDate))) {
+                                        byDate.add(expenses.get(i));
+                                    }
+                                    break;
+                                }
+                                case "Year": {
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat yearS = new SimpleDateFormat("yy");
+                                    Date dateFrom = new Date(Long.parseLong(fromItem));
+                                    if (yearS.format(dateFrom).equals(yearS.format(currDate))) {
+                                        byDate.add(expenses.get(i));
+                                    }
+                                    break;
+                                }
+                                case "Day": {
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat dayS = new SimpleDateFormat("dd MM yy");
+                                    Date dateFrom = new Date(Long.parseLong(fromItem));
+                                    if (dayS.format(dateFrom).equals(dayS.format(currDate))) {
+                                        byDate.add(expenses.get(i));
+                                    }
+                                    break;
+                                }
+                                case "Week": {
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat weekS = new SimpleDateFormat("w");
+                                    Date dateFrom = new Date(Long.parseLong(fromItem));
+                                    if (weekS.format(dateFrom).equals(weekS.format(currDate))) {
+                                        byDate.add(expenses.get(i));
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        adapter.setExpenses(byDate);
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 

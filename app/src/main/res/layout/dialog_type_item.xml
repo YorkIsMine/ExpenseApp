@@ -9,8 +9,7 @@
     <ImageView
         android:id="@+id/image_view_type"
         android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:background="@drawable/ic_insert_photo_black_24dp"/>
+        android:layout_height="50dp" />
 
     <TextView
         android:id="@+id/text_view_type"

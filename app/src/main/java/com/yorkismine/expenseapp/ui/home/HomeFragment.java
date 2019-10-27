@@ -35,9 +35,12 @@ import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.yorkismine.expenseapp.utils.Constants.DEFAULT_VALUE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CODE_REQUEST;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON_DESC;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
 
@@ -170,8 +173,10 @@ public class HomeFragment extends Fragment {
             String desc = data.getStringExtra(EXTRA_DESC);
             String sum = data.getStringExtra(EXTRA_SUM);
             String date = data.getStringExtra(EXTRA_DATE);
+            String iconDesc = data.getStringExtra(EXTRA_ICON_DESC);
+            int icon = data.getIntExtra(EXTRA_ICON, DEFAULT_VALUE);
 
-            Expense expense = new Expense(title, desc, sum, date);
+            Expense expense = new Expense(title, desc, sum, date, icon, iconDesc);
             expenseViewModel.insert(expense);
         }
     }

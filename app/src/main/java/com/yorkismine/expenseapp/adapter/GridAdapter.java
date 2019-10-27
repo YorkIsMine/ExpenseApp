@@ -2,6 +2,7 @@ package com.yorkismine.expenseapp.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Icon;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +48,11 @@ public class GridAdapter extends BaseAdapter {
         return i;
     }
 
+    public TypeOfExpense type;
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        final TypeOfExpense type = types.get(i);
+        type = types.get(i);
         final TypeHolder holder;
         if(view == null){
             view = LayoutInflater.from(context).inflate(R.layout.dialog_type_item, viewGroup, false);
@@ -64,8 +67,8 @@ public class GridAdapter extends BaseAdapter {
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                typeImageView.setImageResource(type.getImageView());
-                typeTextView.setText(type.getType());
+                typeImageView.setImageDrawable(holder.imageView.getDrawable());
+                typeTextView.setText(holder.textView.getText());
                 dismissListener.listen();
             }
         });

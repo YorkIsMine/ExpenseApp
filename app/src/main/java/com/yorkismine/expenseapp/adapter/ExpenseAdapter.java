@@ -1,15 +1,18 @@
 package com.yorkismine.expenseapp.adapter;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yorkismine.expenseapp.R;
+import com.yorkismine.expenseapp.dialog.TypeDialog;
 import com.yorkismine.expenseapp.model.Expense;
 
 import java.text.SimpleDateFormat;
@@ -37,6 +40,9 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         Expense expense = expenses.get(position);
         holder.tvTitle.setText(expense.getTitle());
         holder.tvDesc.setText(expense.getDescription());
+        Log.e("ICON", expense.getIcon() + "");
+        holder.ivType.setImageResource(expense.getIcon());
+        holder.tvTypeDesc.setText(expense.getIconDesc());
 
         //Get date in  milliseconds
         long dateInMillis = Long.parseLong(expense.getDate());
@@ -70,6 +76,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         private TextView tvDesc;
         private TextView tvSum;
         private TextView tvDate;
+        private ImageView ivType;
+        private TextView tvTypeDesc;
 
         public ExpenseHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,6 +85,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
             tvDesc = itemView.findViewById(R.id.item_tv_desc);
             tvSum = itemView.findViewById(R.id.item_tv_sum);
             tvDate = itemView.findViewById(R.id.item_tv_date);
+            ivType = itemView.findViewById(R.id.expense_item_image_view);
+            tvTypeDesc = itemView.findViewById(R.id.type_desc_exp_item);
         }
     }
 }

@@ -8,6 +8,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
+import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.dialog.TypeDialog;
+import com.yorkismine.expenseapp.model.TypeOfExpense;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ import java.util.List;
 
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON_DESC;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TYPE;
@@ -52,6 +56,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     private String date;
     private String dateInMillis;
+    private ArrayList<TypeOfExpense> types;
 
 //    private String[] strings = new String[]{
 //      "adada",
@@ -123,10 +128,19 @@ public class AddExpenseActivity extends AppCompatActivity {
 //            }
 //        });
 
+        types = new ArrayList<>();
+        types.add(new TypeOfExpense("Animal", R.drawable.ic_home_black_24dp));
+        types.add(new TypeOfExpense("Home", R.drawable.ic_notifications_black_24dp));
+        types.add(new TypeOfExpense("Games", R.drawable.ic_settings_black_24dp));
+        types.add(new TypeOfExpense("Food", R.drawable.ic_add));
+        types.add(new TypeOfExpense("Waste", R.drawable.ic_insert_photo_black_24dp));
+        types.add(new TypeOfExpense("Party", R.drawable.ic_launcher_foreground));
+        types.add(new TypeOfExpense("Friends", R.drawable.ic_dashboard_black_24dp));
+
         typeExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TypeDialog dialog = new TypeDialog(typeExpense, typeImgExpense);
+                TypeDialog dialog = new TypeDialog(types, typeExpense, typeImgExpense);
                 dialog.show(getSupportFragmentManager(), "TAG");
             }
         });
@@ -165,6 +179,14 @@ public class AddExpenseActivity extends AppCompatActivity {
         String desc = edtDesc.getText().toString();
         String sum = edtSum.getText().toString();
         String typeDesc = typeExpense.getText().toString();
+        int icon = 0;
+        for(TypeOfExpense type : types){
+            if(typeImgExpense.getDrawable().equals(getDrawable(type.getImageView()))){
+                icon = type.getImageView();
+            }
+
+        }
+
 
         if (sum.trim().length() > 10) {
             Toast.makeText(this, "Max sum 10 digits!", Toast.LENGTH_SHORT)
@@ -185,6 +207,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         data.putExtra(EXTRA_DESC, desc);
         data.putExtra(EXTRA_SUM, sum);
         data.putExtra(EXTRA_DATE, dateInMillis);
+        data.putExtra(EXTRA_ICON, icon);
+        data.putExtra(EXTRA_ICON_DESC, typeDesc);
+
 
         setResult(RESULT_OK, data);
         finish();

@@ -22,11 +22,12 @@ import com.yorkismine.expenseapp.model.TypeOfExpense;
 import java.util.ArrayList;
 
 public class TypeDialog extends DialogFragment implements DismissListener {
-    private ArrayList<TypeOfExpense> types = new ArrayList<>();
+    private ArrayList<TypeOfExpense> types;
     private TextView typeTextView;
     private ImageView typeImageView;
 
-    public TypeDialog(TextView typeTextView, ImageView typeImageView) {
+    public TypeDialog(ArrayList<TypeOfExpense> types, TextView typeTextView, ImageView typeImageView) {
+        this.types = types;
         this.typeTextView = typeTextView;
         this.typeImageView = typeImageView;
     }
@@ -37,12 +38,11 @@ public class TypeDialog extends DialogFragment implements DismissListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_type, container, false);
         GridView gridView = view.findViewById(R.id.dialog_grid);
-        initList();
         ArrayList<Integer> images = new ArrayList<>();
         for(TypeOfExpense type : types){
             images.add(type.getImageView());
+            Log.e("ICON", type.getImageView() + "");
         }
-
         GridAdapter adapter = new GridAdapter(getActivity(), this, images, typeTextView, types, typeImageView);
         gridView.setAdapter(adapter);
 
@@ -54,10 +54,5 @@ public class TypeDialog extends DialogFragment implements DismissListener {
         this.dismiss();
     }
 
-    private void initList(){
-        for (int i = 0; i < 10; i++){
-            types.add(new TypeOfExpense("Animal " + i, R.drawable.ic_launcher_foreground));
-        }
-    }
 }
 

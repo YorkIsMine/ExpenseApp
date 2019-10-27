@@ -28,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.dialog.TypeDialog;
 import com.yorkismine.expenseapp.model.TypeOfExpense;
+import com.yorkismine.expenseapp.singleton.ExpenseUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     private String date;
     private String dateInMillis;
-    private ArrayList<TypeOfExpense> types;
+    private ArrayList<TypeOfExpense> types = ExpenseUtil.getTypes();
 
 //    private String[] strings = new String[]{
 //      "adada",
@@ -128,19 +129,10 @@ public class AddExpenseActivity extends AppCompatActivity {
 //            }
 //        });
 
-        types = new ArrayList<>();
-        types.add(new TypeOfExpense("Animal", R.drawable.ic_home_black_24dp));
-        types.add(new TypeOfExpense("Home", R.drawable.ic_notifications_black_24dp));
-        types.add(new TypeOfExpense("Games", R.drawable.ic_settings_black_24dp));
-        types.add(new TypeOfExpense("Food", R.drawable.ic_add));
-        types.add(new TypeOfExpense("Waste", R.drawable.ic_insert_photo_black_24dp));
-        types.add(new TypeOfExpense("Party", R.drawable.ic_launcher_foreground));
-        types.add(new TypeOfExpense("Friends", R.drawable.ic_dashboard_black_24dp));
-
         typeExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TypeDialog dialog = new TypeDialog(types, typeExpense, typeImgExpense);
+                TypeDialog dialog = new TypeDialog(typeExpense, typeImgExpense);
                 dialog.show(getSupportFragmentManager(), "TAG");
             }
         });
@@ -181,14 +173,16 @@ public class AddExpenseActivity extends AppCompatActivity {
         String typeDesc = typeExpense.getText().toString();
         int icon = 0;
         for(TypeOfExpense type : types){
-            if(typeImgExpense.getDrawable().equals(getDrawable(type.getImageView()))){
+            Log.e("IDY", typeImgExpense.getId() + "");
+            Log.e("IDY", type.getImageView() + "");
+            if(typeImgExpense.getId() == type.getImageView()){
                 icon = type.getImageView();
             }
 
         }
 
 
-        if (sum.trim().length() > 10) {
+        if (sum.trim().length() > 7) {
             Toast.makeText(this, "Max sum 10 digits!", Toast.LENGTH_SHORT)
                     .show();
             return;

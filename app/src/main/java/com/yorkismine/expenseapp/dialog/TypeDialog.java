@@ -18,16 +18,16 @@ import androidx.fragment.app.DialogFragment;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.GridAdapter;
 import com.yorkismine.expenseapp.model.TypeOfExpense;
+import com.yorkismine.expenseapp.singleton.ExpenseUtil;
 
 import java.util.ArrayList;
 
 public class TypeDialog extends DialogFragment implements DismissListener {
-    private ArrayList<TypeOfExpense> types;
+    private ArrayList<TypeOfExpense> types = ExpenseUtil.getTypes();
     private TextView typeTextView;
     private ImageView typeImageView;
 
-    public TypeDialog(ArrayList<TypeOfExpense> types, TextView typeTextView, ImageView typeImageView) {
-        this.types = types;
+    public TypeDialog(TextView typeTextView, ImageView typeImageView) {
         this.typeTextView = typeTextView;
         this.typeImageView = typeImageView;
     }
@@ -43,7 +43,7 @@ public class TypeDialog extends DialogFragment implements DismissListener {
             images.add(type.getImageView());
             Log.e("ICON", type.getImageView() + "");
         }
-        GridAdapter adapter = new GridAdapter(getActivity(), this, images, typeTextView, types, typeImageView);
+        GridAdapter adapter = new GridAdapter(getActivity(), this, images, typeTextView, typeImageView);
         gridView.setAdapter(adapter);
 
         return view;

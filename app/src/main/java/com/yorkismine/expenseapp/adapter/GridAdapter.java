@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.dialog.DismissListener;
 import com.yorkismine.expenseapp.model.TypeOfExpense;
+import com.yorkismine.expenseapp.singleton.ExpenseUtil;
 
 import java.util.ArrayList;
 
@@ -21,15 +22,14 @@ public class GridAdapter extends BaseAdapter {
     private DismissListener dismissListener;
     private ArrayList<Integer> images;
     private TextView typeTextView;
-    private ArrayList<TypeOfExpense> types;
+    private ArrayList<TypeOfExpense> types = ExpenseUtil.getTypes();
     private ImageView typeImageView;
 
-    public GridAdapter(Context context, DismissListener dismissListener, ArrayList<Integer> images, TextView typeTextView, ArrayList<TypeOfExpense> types, ImageView typeImageView) {
+    public GridAdapter(Context context, DismissListener dismissListener, ArrayList<Integer> images, TextView typeTextView, ImageView typeImageView) {
         this.context = context;
         this.dismissListener = dismissListener;
         this.images = images;
         this.typeTextView = typeTextView;
-        this.types = types;
         this.typeImageView = typeImageView;
     }
 

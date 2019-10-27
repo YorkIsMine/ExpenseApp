@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.dialog.TypeDialog;
 import com.yorkismine.expenseapp.model.Expense;
+import com.yorkismine.expenseapp.singleton.ExpenseUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -41,14 +42,14 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         holder.tvTitle.setText(expense.getTitle());
         holder.tvDesc.setText(expense.getDescription());
         Log.e("ICON", expense.getIcon() + "");
-        holder.ivType.setImageResource(expense.getIcon());
+        holder.ivType.setImageResource(ExpenseUtil.getTypes().get(position).getImageView());
         holder.tvTypeDesc.setText(expense.getIconDesc());
 
         //Get date in  milliseconds
         long dateInMillis = Long.parseLong(expense.getDate());
         //Convert date to date format
         Date date = new Date(dateInMillis);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("dd MMM yy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("dd MMM yyyy");
         holder.tvDate.setText(s.format(date));
 
         if (expense.getSum() == null) {

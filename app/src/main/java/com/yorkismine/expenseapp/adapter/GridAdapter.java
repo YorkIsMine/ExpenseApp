@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.dialog.DismissListener;
@@ -51,7 +52,8 @@ public class GridAdapter extends BaseAdapter {
     public TypeOfExpense type;
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
+        final int pos = i;
         type = types.get(i);
         final TypeHolder holder;
         if(view == null){
@@ -69,6 +71,7 @@ public class GridAdapter extends BaseAdapter {
             public void onClick(View view) {
                 typeImageView.setImageDrawable(holder.imageView.getDrawable());
                 typeTextView.setText(holder.textView.getText());
+                Toast.makeText(view.getContext(), pos + "",  Toast.LENGTH_LONG).show();
                 dismissListener.listen();
             }
         });

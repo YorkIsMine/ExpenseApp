@@ -3,6 +3,7 @@ package com.yorkismine.expenseapp.ui.home;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,17 +25,22 @@ import com.yorkismine.expenseapp.AddExpenseActivity;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
-import com.yorkismine.expenseapp.recycler.ExpenseAdapter;
+import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.yorkismine.expenseapp.utils.Constants.DEFAULT_VALUE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CODE_REQUEST;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON_DESC;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
 
@@ -52,7 +58,7 @@ public class HomeFragment extends Fragment {
 
 
         //Define dropdown Spinner
-        String[] data = {"Month", "Day", "Week", "Year"};
+        final String[] data = {"Month", "Day", "Week", "Year", "Sort by sum"};
         mAdapter = new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {
             //Set textColor
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -79,7 +85,7 @@ public class HomeFragment extends Fragment {
                 expenseViewModel = ViewModelProviders.of(HomeFragment.this).get(ExpenseViewModel.class);
                 expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
                     @Override
-                    public void onChanged(List<Expense> expenses) {
+                    public void onChanged(final List<Expense> expenses) {
                         List<Expense> byDate = new ArrayList<>();
                         Date currDate = new Date();
 
@@ -121,6 +127,19 @@ public class HomeFragment extends Fragment {
                                     }
                                     break;
                                 }
+                                case "Sort by sum":{
+                                    byDate = expenses;
+                                    Collections.sort(byDate, new Comparator<Expense>() {
+                                        @Override
+                                        public int compare(Expense expense, Expense t1) {
+                                            Log.e("BLA_!", "" + t1.getSum());
+                                            int sum1 = Integer.parseInt(expense.getSum());
+                                            int sum2 = Integer.parseInt(t1.getSum());
+                                            return sum1 - sum2;
+                                        }
+                                    });
+                                    break;
+                                }
                             }
                         }
                         adapter.setExpenses(byDate);
@@ -154,8 +173,10 @@ public class HomeFragment extends Fragment {
             String desc = data.getStringExtra(EXTRA_DESC);
             String sum = data.getStringExtra(EXTRA_SUM);
             String date = data.getStringExtra(EXTRA_DATE);
+            String iconDesc = data.getStringExtra(EXTRA_ICON_DESC);
+            int icon = data.getIntExtra(EXTRA_ICON, DEFAULT_VALUE);
 
-            Expense expense = new Expense(title, desc, sum, date);
+            Expense expense = new Expense(title, desc, sum, date, icon, iconDesc);
             expenseViewModel.insert(expense);
         }
     }

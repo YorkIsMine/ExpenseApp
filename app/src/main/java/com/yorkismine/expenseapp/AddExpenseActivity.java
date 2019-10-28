@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.dialog.TypeDialog;
 import com.yorkismine.expenseapp.model.TypeOfExpense;
@@ -37,6 +38,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON;
@@ -51,26 +53,16 @@ public class AddExpenseActivity extends AppCompatActivity {
     private EditText edtTitle;
     private EditText edtDesc;
     private EditText edtSum;
-    private TextView cvDate;
-    private TextView typeExpense;
+    private MaterialCardView cvDate;
+    private TextView tvTypeExpense;
+    private MaterialCardView typeExpense;
     private ImageView typeImgExpense;
 
     private String date;
     private String dateInMillis;
+    private TextView tvCurrency;
+    private TextView tvDate;
     private ArrayList<TypeOfExpense> types = ExpenseUtil.getTypes();
-
-//    private String[] strings = new String[]{
-//      "adada",
-//      "dadadadada",
-//      "dadadada",
-//      "HELLLO!!!!!!!",
-//      "adada",
-//      "sfseasdsf",
-//      "lskfkslfksf",
-//      "dadada",
-//      "kuku",
-//      "Item"
-//    };
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -81,58 +73,21 @@ public class AddExpenseActivity extends AppCompatActivity {
         edtTitle = findViewById(R.id.add_edt_title);
         edtDesc = findViewById(R.id.add_edt_desc);
         edtSum = findViewById(R.id.add_edt_sum);
-        cvDate = findViewById(R.id.add_date);
+        cvDate = findViewById(R.id.add_cv_date);
+        tvDate = findViewById(R.id.add_tv_date);
+        tvCurrency = findViewById(R.id.add_tv_currency);
+        tvCurrency.setText(EXTRA_CURRENCY);
+
         typeExpense = findViewById(R.id.add_type);
+        tvTypeExpense = findViewById(R.id.add_tv_type);
         typeImgExpense = findViewById(R.id.add_icon_type);
-        //Getting anf Setting date from CalendarView
-//        cvDate.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-//
-//                GregorianCalendar calendar = new GregorianCalendar(year, month, dayOfMonth);
-////                Date hireDay = calendar.getTime();
-////                @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yy");
-////                date = sdf.format(hireDay);
-//                dateInMillis = String.valueOf(calendar.getTimeInMillis());
-//
-////                Log.d("TAG", "Date clicked: " + sdf.format(hireDay));
-//                Log.d("TAG", "Date clicked in milliseconds: " + dateInMillis);
-//            }
-//        });
-
-
-
-
-//        typeExpense.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                GridView gridView = new GridView(AddExpenseActivity.this);
-//                final AlertDialog.Builder builder = new AlertDialog.Builder(AddExpenseActivity.this);
-//                builder.setView(gridView);
-//                builder.setTitle("Choose category of expense:");
-//                gridView.setNumColumns(2);
-//                final AlertDialog alertDialog = builder.create();
-//                ArrayAdapter<String> adapter = new ArrayAdapter<>(AddExpenseActivity.this, android.R.layout.simple_list_item_1, strings);
-//                gridView.setAdapter(adapter);
-//                gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                        Toast.makeText(AddExpenseActivity.this,
-//                                "You tapped" + position, Toast.LENGTH_LONG).show();
-//                        typeExpense.setText(position + "");
-//                        alertDialog.dismiss();
-//                    }
-//                });
-//
-//
-//                alertDialog.show();
-//            }
-//        });
+        typeImgExpense.setImageResource(R.drawable.ic_type);
 
         typeExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TypeDialog dialog = new TypeDialog(typeExpense, typeImgExpense);
+                TypeDialog dialog = new TypeDialog(tvTypeExpense, typeImgExpense);
+                typeImgExpense.setBackground(null);
                 dialog.show(getSupportFragmentManager(), "TAG");
             }
         });
@@ -149,7 +104,7 @@ public class AddExpenseActivity extends AppCompatActivity {
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
                         date = sdf.format(mCalendar.getTime());
                         dateInMillis = String.valueOf(mCalendar.getTimeInMillis());
-                        cvDate.setText(date);
+                        tvDate.setText(date);
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
 
@@ -171,18 +126,16 @@ public class AddExpenseActivity extends AppCompatActivity {
         String title = edtTitle.getText().toString();
         String desc = edtDesc.getText().toString();
         String sum = edtSum.getText().toString();
-        String typeDesc = typeExpense.getText().toString();
+        String typeDesc = tvTypeExpense.getText().toString();
         int icon = 0;
         for(TypeOfExpense type : types){
             if(typeImgExpense.getId() == type.getImageView()){
                 icon = type.getImageView();
             }
-
         }
 
-
         if (sum.trim().length() > 7) {
-            Toast.makeText(this, "Max sum 10 digits!", Toast.LENGTH_SHORT)
+            Toast.makeText(this, "Max sum 7 digits!", Toast.LENGTH_SHORT)
                     .show();
             return;
         }

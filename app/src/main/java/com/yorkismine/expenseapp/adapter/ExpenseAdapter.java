@@ -22,7 +22,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_RUB;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_USD;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_YEN;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseHolder> {
 
@@ -56,8 +59,24 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
             sum = "0 " + EXTRA_CURRENCY_RUB;
             holder.tvSum.setText(sum);
         } else {
-            sum = expense.getSum() + " " + EXTRA_CURRENCY_RUB;
-            holder.tvSum.setText(sum);
+            sum = expense.getSum() + " " + EXTRA_CURRENCY;
+            double d = Double.valueOf(expense.getSum());
+            int sumInt = (int) d;
+            //TODO make to RIGHT choose currency
+            switch (EXTRA_CURRENCY) {
+                case EXTRA_CURRENCY_USD:
+                    holder.tvSum.setText(sum);
+                    break;
+                case EXTRA_CURRENCY_RUB:
+                    sum = (sumInt * 62) + " " + EXTRA_CURRENCY_RUB;
+                    holder.tvSum.setText(sum);
+                    break;
+                case EXTRA_CURRENCY_YEN:
+                    sum = (sumInt * 10) + " " + EXTRA_CURRENCY_YEN;
+                    holder.tvSum.setText(sum);
+                    break;
+            }
+
         }
 
     }

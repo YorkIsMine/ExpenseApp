@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(final AdapterView<?> parent, View view, final int position, long id) {
 
-                Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
 
                 expenseViewModel = ViewModelProviders.of(HomeFragment.this).get(ExpenseViewModel.class);
                 expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {

@@ -66,6 +66,7 @@ public class GridAdapter extends BaseAdapter {
         holder.imageView.setImageResource(type.getImageView());
 
 
+
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

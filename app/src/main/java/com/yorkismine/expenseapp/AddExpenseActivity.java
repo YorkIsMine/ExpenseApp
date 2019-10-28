@@ -83,6 +83,12 @@ public class AddExpenseActivity extends AppCompatActivity {
         typeImgExpense = findViewById(R.id.add_icon_type);
         typeImgExpense.setImageResource(R.drawable.ic_type);
 
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
+        Calendar mCalendar = Calendar.getInstance();
+        date = sdf.format(mCalendar.getTime());
+        dateInMillis = String.valueOf(mCalendar.getTimeInMillis());
+        tvDate.setText(date);
+
         typeExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,10 +145,8 @@ public class AddExpenseActivity extends AppCompatActivity {
                     .show();
             return;
         }
-        if (dateInMillis.trim().isEmpty() || dateInMillis.trim().equals(" ")) {
-            dateInMillis = "01.01.19";
-        }
-        if (title.trim().isEmpty() || desc.trim().isEmpty() || sum.isEmpty() || dateInMillis.isEmpty()) {
+
+        if (title.trim().isEmpty() || desc.trim().isEmpty() || sum.isEmpty() || dateInMillis.isEmpty() || typeDesc.trim().isEmpty()) {
             Toast.makeText(this, "Insert all fields!", Toast.LENGTH_SHORT)
                     .show();
             return;

@@ -32,7 +32,7 @@ public class TypeDialog extends DialogFragment implements DismissListener {
         this.typeImageView = typeImageView;
     }
 
-    //ToDo need refactoring
+    //ToDo need refactoring (ForEach)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

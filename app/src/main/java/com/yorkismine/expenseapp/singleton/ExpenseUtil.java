@@ -11,9 +11,9 @@ public class ExpenseUtil {
     static {
         types = new ArrayList<>();
         types.add(new TypeOfExpense("Animal", R.drawable.ic_home_black_24dp));
-        types.add(new TypeOfExpense("Home", R.drawable.ic_notifications_black_24dp));
-        types.add(new TypeOfExpense("Games", R.drawable.ic_settings_black_24dp));
-        types.add(new TypeOfExpense("Food", R.drawable.ic_add));
+        types.add(new TypeOfExpense("Home", R.drawable.ic_home));
+        types.add(new TypeOfExpense("Games", R.drawable.ic_games));
+        types.add(new TypeOfExpense("Food", R.drawable.ic_food));
         types.add(new TypeOfExpense("Waste", R.drawable.ic_insert_photo_black_24dp));
         types.add(new TypeOfExpense("Party", R.drawable.ic_launcher_foreground));
         types.add(new TypeOfExpense("Friends", R.drawable.ic_dashboard_black_24dp));

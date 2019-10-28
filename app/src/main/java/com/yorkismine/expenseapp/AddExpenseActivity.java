@@ -166,6 +166,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         });
     }
 
+    //ToDo need some refactoring (ForEach)
     private void saveExpense() {
         String title = edtTitle.getText().toString();
         String desc = edtDesc.getText().toString();
@@ -173,8 +174,6 @@ public class AddExpenseActivity extends AppCompatActivity {
         String typeDesc = typeExpense.getText().toString();
         int icon = 0;
         for(TypeOfExpense type : types){
-            Log.e("IDY", typeImgExpense.getId() + "");
-            Log.e("IDY", type.getImageView() + "");
             if(typeImgExpense.getId() == type.getImageView()){
                 icon = type.getImageView();
             }

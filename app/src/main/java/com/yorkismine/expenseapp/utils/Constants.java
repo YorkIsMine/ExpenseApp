@@ -11,7 +11,7 @@ public class Constants{
     public static String EXTRA_CURRENCY = "$";
     public static final String EXTRA_CURRENCY_RUB = "р";
     public static final String EXTRA_CURRENCY_USD = "$";
-    public static final String EXTRA_CURRENCY_EURO = "€";
+    public static final String EXTRA_CURRENCY_EUR = "€";
     public static final String EXTRA_CURRENCY_YEN = "Y";
     public static final int EXTRA_CODE_REQUEST = 1;
     public static final int DEFAULT_VALUE = 0;

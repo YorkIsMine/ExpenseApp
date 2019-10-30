@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,9 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.AddExpenseActivity;
 import com.yorkismine.expenseapp.R;
+import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
-import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,6 +36,7 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static com.yorkismine.expenseapp.utils.Constants.DEFAULT_VALUE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CODE_REQUEST;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON;
@@ -58,7 +58,7 @@ public class HomeFragment extends Fragment {
 
 
         //Define dropdown Spinner
-        final String[] data = {"Month", "Day", "Week", "Year", "Sort by sum"};
+        final String[] data = {"Month", "Today", "Week", "Year", "Sort by sum"};
         mAdapter = new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {
             //Set textColor
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -111,7 +111,7 @@ public class HomeFragment extends Fragment {
                                     }
                                     break;
                                 }
-                                case "Day": {
+                                case "Today": {
                                     @SuppressLint("SimpleDateFormat") SimpleDateFormat dayS = new SimpleDateFormat("dd MM yy");
                                     Date dateFrom = new Date(Long.parseLong(fromItem));
                                     if (dayS.format(dateFrom).equals(dayS.format(currDate))) {
@@ -127,7 +127,7 @@ public class HomeFragment extends Fragment {
                                     }
                                     break;
                                 }
-                                case "Sort by sum":{
+                                case "Sort by sum": {
                                     byDate = expenses;
                                     Collections.sort(byDate, new Comparator<Expense>() {
                                         @Override
@@ -176,7 +176,7 @@ public class HomeFragment extends Fragment {
             String iconDesc = data.getStringExtra(EXTRA_ICON_DESC);
             int icon = data.getIntExtra(EXTRA_ICON, DEFAULT_VALUE);
 
-            Expense expense = new Expense(title, desc, sum, date, icon, iconDesc);
+            Expense expense = new Expense(title, desc, sum, EXTRA_CURRENCY, date, icon, iconDesc);
             expenseViewModel.insert(expense);
         }
     }

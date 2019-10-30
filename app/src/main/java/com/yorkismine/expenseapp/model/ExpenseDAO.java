@@ -20,9 +20,9 @@ public interface ExpenseDAO {
     @Delete
     void delete(Expense expense);
 
-    @Query("DELETE FROM expense_table_v5")
+    @Query("DELETE FROM expense_table_v6")
     void deleteAllExpenses();
 
-    @Query("SELECT * FROM expense_table_v5")
+    @Query("SELECT * FROM expense_table_v6")
     LiveData<List<Expense>> getAllExpenses();
 }

@@ -5,7 +5,7 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "expense_table_v5")
+@Entity(tableName = "expense_table_v6")
 public class Expense {
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
@@ -20,6 +20,17 @@ public class Expense {
     @ColumnInfo(name = "expense_sum")
     private String sum;
 
+    @ColumnInfo(name = "expense_currency")
+    private String currency;
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
     @ColumnInfo(name = "expense_date")
     private String date;
 
@@ -33,10 +44,11 @@ public class Expense {
     public Expense() {
     }
 
-    public Expense(String title, String description, String sum, String date, int icon, String iconDesc) {
+    public Expense(String title, String description, String sum, String currency, String date, int icon, String iconDesc) {
         this.title = title;
         this.description = description;
         this.sum = sum;
+        this.currency = currency;
         this.date = date;
         this.icon = icon;
         this.iconDesc = iconDesc;

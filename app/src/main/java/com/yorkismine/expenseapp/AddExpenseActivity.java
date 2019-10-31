@@ -1,28 +1,16 @@
 package com.yorkismine.expenseapp;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.card.MaterialCardView;
@@ -34,9 +22,7 @@ import com.yorkismine.expenseapp.singleton.ExpenseUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
@@ -45,7 +31,6 @@ import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON_DESC;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TYPE;
 
 public class AddExpenseActivity extends AppCompatActivity {
 
@@ -128,8 +113,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         String sum = edtSum.getText().toString();
         String typeDesc = tvTypeExpense.getText().toString();
         int icon = 0;
-        for(TypeOfExpense type : types){
-            if(typeImgExpense.getId() == type.getImageView()){
+        for (TypeOfExpense type : types) {
+            if (typeImgExpense.getId() == type.getImageView()) {
                 icon = type.getImageView();
             }
         }

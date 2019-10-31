@@ -1,7 +1,6 @@
 package com.yorkismine.expenseapp.adapter;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yorkismine.expenseapp.R;
-import com.yorkismine.expenseapp.dialog.TypeDialog;
 import com.yorkismine.expenseapp.model.Expense;
-import com.yorkismine.expenseapp.model.TypeOfExpense;
 import com.yorkismine.expenseapp.singleton.ExpenseUtil;
 
 import java.text.SimpleDateFormat;
@@ -56,26 +53,17 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         holder.tvDate.setText(s.format(date));
 
         if (expense.getSum() == null) {
-            sum = "0 " + EXTRA_CURRENCY_RUB;
+            sum = "0 " + EXTRA_CURRENCY;
             holder.tvSum.setText(sum);
         } else {
+            String currency = expense.getCurrency();
             sum = expense.getSum() + " " + EXTRA_CURRENCY;
             double d = Double.valueOf(expense.getSum());
             int sumInt = (int) d;
-            //TODO make to RIGHT choose currency
-            switch (EXTRA_CURRENCY) {
-                case EXTRA_CURRENCY_USD:
-                    holder.tvSum.setText(sum);
-                    break;
-                case EXTRA_CURRENCY_RUB:
-                    sum = (sumInt * 62) + " " + EXTRA_CURRENCY_RUB;
-                    holder.tvSum.setText(sum);
-                    break;
-                case EXTRA_CURRENCY_YEN:
-                    sum = (sumInt * 10) + " " + EXTRA_CURRENCY_YEN;
-                    holder.tvSum.setText(sum);
-                    break;
-            }
+            if (EXTRA_CURRENCY.equals(currency)) {
+                holder.tvSum.setText(sum);
+            } else if (EXTRA_CURRENCY.equals(currency.contains(EXTRA_CURRENCY_USD))) {
+
 
         }
 

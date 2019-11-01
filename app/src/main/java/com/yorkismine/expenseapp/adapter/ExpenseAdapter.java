@@ -44,7 +44,9 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         holder.tvTitle.setText(expense.getTitle());
         holder.tvDesc.setText(expense.getDescription());
         holder.tvTypeDesc.setText(expense.getIconDesc());
-        holder.ivType.setImageResource(ExpenseUtil.getType(holder.tvTypeDesc.getText().toString()).getImageView());
+        if (ExpenseUtil.getType(holder.tvTypeDesc.getText().toString()) != null) {
+            holder.ivType.setImageResource(ExpenseUtil.getType(holder.tvTypeDesc.getText().toString()).getImageView());
+        }
 
         //Get date in  milliseconds
         long dateInMillis = Date.parse(expense.getDate());
@@ -54,14 +56,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         holder.tvDate.setText(s.format(date));
 
         if (expense.getSum() == null) {
-            sum = "0 " + EXTRA_CURRENCY_RUB;
+            sum = "0 " + EXTRA_CURRENCY;
             holder.tvSum.setText(sum);
         } else {
             sum = expense.getSum();
             String currency = expense.getCurrency();
             double d = Double.valueOf(expense.getSum());
             int sumInt = (int) d;
-            //TODO make to RIGHT choose currency
             checkCurrency(holder, sumInt, currency);
         }
 
@@ -76,6 +77,26 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
     public void setExpenses(List<Expense> expenses) {
         this.expenses = expenses;
         notifyDataSetChanged();
+    }
+
+
+    public class ExpenseHolder extends RecyclerView.ViewHolder {
+        private TextView tvTitle;
+        private TextView tvDesc;
+        private TextView tvSum;
+        private TextView tvDate;
+        private ImageView ivType;
+        private TextView tvTypeDesc;
+
+        public ExpenseHolder(@NonNull View itemView) {
+            super(itemView);
+            tvTitle = itemView.findViewById(R.id.item_tv_title);
+            tvDesc = itemView.findViewById(R.id.item_tv_desc);
+            tvSum = itemView.findViewById(R.id.item_tv_sum);
+            tvDate = itemView.findViewById(R.id.item_tv_date);
+            ivType = itemView.findViewById(R.id.expense_item_image_view);
+            tvTypeDesc = itemView.findViewById(R.id.type_desc_exp_item);
+        }
     }
 
     private void checkCurrency(ExpenseHolder holder, int s, String currency) {
@@ -135,22 +156,4 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         }
     }
 
-    public class ExpenseHolder extends RecyclerView.ViewHolder {
-        private TextView tvTitle;
-        private TextView tvDesc;
-        private TextView tvSum;
-        private TextView tvDate;
-        private ImageView ivType;
-        private TextView tvTypeDesc;
-
-        public ExpenseHolder(@NonNull View itemView) {
-            super(itemView);
-            tvTitle = itemView.findViewById(R.id.item_tv_title);
-            tvDesc = itemView.findViewById(R.id.item_tv_desc);
-            tvSum = itemView.findViewById(R.id.item_tv_sum);
-            tvDate = itemView.findViewById(R.id.item_tv_date);
-            ivType = itemView.findViewById(R.id.expense_item_image_view);
-            tvTypeDesc = itemView.findViewById(R.id.type_desc_exp_item);
-        }
-    }
 }

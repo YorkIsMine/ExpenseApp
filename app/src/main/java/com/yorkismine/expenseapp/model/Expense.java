@@ -19,10 +19,9 @@ public class Expense {
 
     @ColumnInfo(name = "expense_sum")
     private String sum;
+
     @ColumnInfo(name = "expense_currency")
     private String currency;
-
-
 
     @ColumnInfo(name = "expense_date")
     private String date;
@@ -86,6 +85,7 @@ public class Expense {
     public void setSum(String sum) {
         this.sum = sum;
     }
+
     public String getCurrency() {
         return currency;
     }
@@ -93,6 +93,7 @@ public class Expense {
     public void setCurrency(String currency) {
         this.currency = currency;
     }
+
     public int getIcon() {
         return icon;
     }

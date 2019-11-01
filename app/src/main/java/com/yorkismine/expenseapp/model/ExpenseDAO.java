@@ -25,4 +25,14 @@ public interface ExpenseDAO {
 
     @Query("SELECT * FROM expense_table_v6")
     LiveData<List<Expense>> getAllExpenses();
+
+    @Query("SELECT * FROM expense_table_v6 ORDER BY expense_date asc")
+    LiveData<List<Expense>> sortByDate();
+
+    @Query("SELECT * FROM expense_table_v6 ORDER BY expense_title asc")
+    LiveData<List<Expense>> sortByName();
+
+    @Query("SELECT * FROM expense_table_v6 ORDER BY expense_sum asc")
+    LiveData<List<Expense>> sortBySum();
+
 }

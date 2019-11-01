@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
+import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_EUR;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_RUB;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_USD;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_YEN;
@@ -43,7 +44,9 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         holder.tvTitle.setText(expense.getTitle());
         holder.tvDesc.setText(expense.getDescription());
         holder.tvTypeDesc.setText(expense.getIconDesc());
-        holder.ivType.setImageResource(ExpenseUtil.getType(holder.tvTypeDesc.getText().toString()).getImageView());
+        if (ExpenseUtil.getType(holder.tvTypeDesc.getText().toString()) != null) {
+            holder.ivType.setImageResource(ExpenseUtil.getType(holder.tvTypeDesc.getText().toString()).getImageView());
+        }
 
         //Get date in  milliseconds
         long dateInMillis = Long.parseLong(expense.getDate());
@@ -56,18 +59,15 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
             sum = "0 " + EXTRA_CURRENCY;
             holder.tvSum.setText(sum);
         } else {
+            sum = expense.getSum();
             String currency = expense.getCurrency();
-            sum = expense.getSum() + " " + EXTRA_CURRENCY;
             double d = Double.valueOf(expense.getSum());
             int sumInt = (int) d;
-            if (EXTRA_CURRENCY.equals(currency)) {
-                holder.tvSum.setText(sum);
-            } else if (EXTRA_CURRENCY.equals(currency.contains(EXTRA_CURRENCY_USD))) {
-
-
+            checkCurrency(holder, sumInt, currency);
         }
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -78,6 +78,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         this.expenses = expenses;
         notifyDataSetChanged();
     }
+
 
     public class ExpenseHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle;
@@ -97,4 +98,62 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
             tvTypeDesc = itemView.findViewById(R.id.type_desc_exp_item);
         }
     }
+
+    private void checkCurrency(ExpenseHolder holder, int s, String currency) {
+        if (EXTRA_CURRENCY.equals(currency)) {
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_USD) && currency.equals(EXTRA_CURRENCY_RUB)) {
+            s = s / 62;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_USD) && currency.equals(EXTRA_CURRENCY_YEN)) {
+            s = s / 10;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_USD) && currency.equals(EXTRA_CURRENCY_EUR)) {
+            double d = s * 1.1;
+            s = (int) d;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_RUB) && currency.equals(EXTRA_CURRENCY_USD)) {
+            s = s * 62;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_RUB) && currency.equals(EXTRA_CURRENCY_YEN)) {
+            s = s * 6;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_RUB) && currency.equals(EXTRA_CURRENCY_EUR)) {
+            s = s * 71;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_YEN) && currency.equals(EXTRA_CURRENCY_USD)) {
+            s = s * 10;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_YEN) && currency.equals(EXTRA_CURRENCY_RUB)) {
+            s = s / 6;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_YEN) && currency.equals(EXTRA_CURRENCY_EUR)) {
+            s = s / 7;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_EUR) && currency.equals(EXTRA_CURRENCY_USD)) {
+            double d = s / 1.1;
+            s = (int) d;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_EUR) && currency.equals(EXTRA_CURRENCY_RUB)) {
+            s = s / 71;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        } else if (EXTRA_CURRENCY.equals(EXTRA_CURRENCY_EUR) && currency.equals(EXTRA_CURRENCY_YEN)) {
+            s = s * 11;
+            sum = s + EXTRA_CURRENCY;
+            holder.tvSum.setText(sum);
+        }
+    }
+
 }

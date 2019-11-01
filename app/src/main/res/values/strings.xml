@@ -13,6 +13,11 @@
     <string name="choose_date">Choose date</string>
     <string name="sum">Sum:</string>
     <string name="_0">0</string>
+    <string name="eur">EUR</string>
+    <string name="bySum">Sum</string>
+    <string name="byDate">Date</string>
+    <string name="byName">Name</string>
+    <string name="sort_by">Sort:</string>
     <string-array name="drop_down_list">
         <item>Month</item>
         <item>Day</item>

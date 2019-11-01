@@ -2,16 +2,17 @@ package com.yorkismine.expenseapp.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,12 +24,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.AddExpenseActivity;
 import com.yorkismine.expenseapp.R;
+import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
-import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -55,11 +57,15 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        final View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        //Add  buttons to sorting by
+        final Button btnByDate = root.findViewById(R.id.home_btn_date);
+        final Button btnByName = root.findViewById(R.id.home_btn_name);
+        final Button btnBySum = root.findViewById(R.id.home_btn_sum);
 
         //Define dropdown Spinner
-        final String[] data = {"Month", "Day", "Week", "Year", "Sort by sum"};
+        final String[] data = {"Month", "Today", "Week", "Year"};
         mAdapter = new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {
             //Set textColor
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -81,13 +87,11 @@ public class HomeFragment extends Fragment {
             @Override
             public void onItemSelected(final AdapterView<?> parent, View view, final int position, long id) {
 
-//                Toast.makeText(getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
-
                 expenseViewModel = ViewModelProviders.of(HomeFragment.this).get(ExpenseViewModel.class);
                 expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
                     @Override
                     public void onChanged(final List<Expense> expenses) {
-                        List<Expense> byDate = new ArrayList<>();
+                        final List<Expense> byDate = new ArrayList<>();
                         Date currDate = new Date();
 
                         for (int i = 0; i < expenses.size(); i++) {
@@ -112,7 +116,7 @@ public class HomeFragment extends Fragment {
                                     }
                                     break;
                                 }
-                                case "Day": {
+                                case "Today": {
                                     @SuppressLint("SimpleDateFormat") SimpleDateFormat dayS = new SimpleDateFormat("dd MM yy");
                                     Date dateFrom = new Date(Long.parseLong(fromItem));
                                     if (dayS.format(dateFrom).equals(dayS.format(currDate))) {
@@ -128,22 +132,29 @@ public class HomeFragment extends Fragment {
                                     }
                                     break;
                                 }
-                                case "Sort by sum":{
-                                    byDate = expenses;
-                                    Collections.sort(byDate, new Comparator<Expense>() {
-                                        @Override
-                                        public int compare(Expense expense, Expense t1) {
-                                            Log.e("BLA_!", "" + t1.getSum());
-                                            int sum1 = Integer.parseInt(expense.getSum());
-                                            int sum2 = Integer.parseInt(t1.getSum());
-                                            return sum1 - sum2;
-                                        }
-                                    });
-                                    break;
-                                }
                             }
                         }
                         adapter.setExpenses(byDate);
+
+                        // Add sorting by request
+                        btnByDate.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                adapter.setExpenses(sortByDate(byDate));
+                            }
+                        });
+                        btnByName.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                adapter.setExpenses(sortByName(byDate));
+                            }
+                        });
+                        btnBySum.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                adapter.setExpenses(sortBySum(byDate));
+                            }
+                        });
                     }
                 });
             }
@@ -163,6 +174,34 @@ public class HomeFragment extends Fragment {
             }
         });
         return root;
+    }
+
+    private List<Expense> sortByDate(List<Expense> byDate) {
+        Collections.sort(byDate, new Comparator<Expense>() {
+            @Override
+            public int compare(Expense o1, Expense o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+        return byDate;
+    }
+    private List<Expense> sortByName(List<Expense> byDate) {
+        Collections.sort(byDate, new Comparator<Expense>() {
+            @Override
+            public int compare(Expense o1, Expense o2) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+        });
+        return byDate;
+    }
+    private List<Expense> sortBySum(List<Expense> byDate) {
+        Collections.sort(byDate, new Comparator<Expense>() {
+            @Override
+            public int compare(Expense o1, Expense o2) {
+                return o1.getSum().compareTo(o2.getSum());
+            }
+        });
+        return byDate;
     }
 
     @Override

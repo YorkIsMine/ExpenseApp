@@ -47,7 +47,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         holder.ivType.setImageResource(ExpenseUtil.getType(holder.tvTypeDesc.getText().toString()).getImageView());
 
         //Get date in  milliseconds
-        long dateInMillis = Long.parseLong(expense.getDate());
+        long dateInMillis = Date.parse(expense.getDate());
         //Convert date to date format
         Date date = new Date(dateInMillis);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("dd MMM yyyy");

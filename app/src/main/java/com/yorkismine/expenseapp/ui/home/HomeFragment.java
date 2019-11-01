@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.AddExpenseActivity;
+import com.yorkismine.expenseapp.AddExpenseBottomDialog;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
@@ -97,7 +98,7 @@ public class HomeFragment extends Fragment {
                             switch (currentDate) {
                                 case "Month": {
                                     @SuppressLint("SimpleDateFormat") SimpleDateFormat monthS = new SimpleDateFormat("MM");
-                                    Date dateFrom = new Date(Long.parseLong(fromItem));
+                                    Date dateFrom = new Date(Date.parse(fromItem));
                                     if (monthS.format(dateFrom).equals(monthS.format(currDate))) {
                                         byDate.add(expenses.get(i));
                                     }
@@ -157,8 +158,8 @@ public class HomeFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), AddExpenseActivity.class);
-                startActivityForResult(intent, EXTRA_CODE_REQUEST);
+                AddExpenseBottomDialog dialog = new AddExpenseBottomDialog();
+                dialog.show(getActivity().getSupportFragmentManager(), "DIALOG_BOTTOM_ADD_EXPENSE_TAG");
             }
         });
         return root;

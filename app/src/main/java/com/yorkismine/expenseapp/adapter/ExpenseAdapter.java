@@ -79,6 +79,9 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         notifyDataSetChanged();
     }
 
+    public Expense expenseAt(int pos){
+        return expenses.get(pos);
+    }
 
     public class ExpenseHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle;

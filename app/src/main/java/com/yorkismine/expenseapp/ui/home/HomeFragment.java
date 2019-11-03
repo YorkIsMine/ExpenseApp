@@ -105,7 +105,7 @@ public class HomeFragment extends Fragment {
                             switch (currentDate) {
                                 case "Month": {
                                     @SuppressLint("SimpleDateFormat") SimpleDateFormat monthS = new SimpleDateFormat("MM");
-                                    Date dateFrom = new Date(Date.parse(fromItem));
+                                    Date dateFrom = new Date(Long.parseLong(fromItem));
                                     if (monthS.format(dateFrom).equals(monthS.format(currDate))) {
                                         byDate.add(expenses.get(i));
                                     }

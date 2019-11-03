@@ -152,7 +152,7 @@ public class AddExpenseBottomDialog extends BottomSheetDialogFragment {
         }
         
 
-        Expense expense = new Expense(title, desc, sum, EXTRA_CURRENCY, date, icon, typeDesc);
+        Expense expense = new Expense(title, desc, sum, EXTRA_CURRENCY, dateInMillis, icon, typeDesc);
         expenseViewModel.insert(expense);
 
         this.dismiss();

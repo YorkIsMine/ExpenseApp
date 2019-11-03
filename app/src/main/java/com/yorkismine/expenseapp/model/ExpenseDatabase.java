@@ -15,7 +15,7 @@ public abstract class ExpenseDatabase extends RoomDatabase {
     public static synchronized ExpenseDatabase getInstance(Context context){
         if(instance == null){
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    ExpenseDatabase.class, "expense_table_v6").build();
+                    ExpenseDatabase.class, "expense_table_v7").build();
         }
 
         return instance;

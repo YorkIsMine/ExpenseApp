@@ -20,19 +20,19 @@ public interface ExpenseDAO {
     @Delete
     void delete(Expense expense);
 
-    @Query("DELETE FROM expense_table_v6")
+    @Query("DELETE FROM expense_table_v7")
     void deleteAllExpenses();
 
-    @Query("SELECT * FROM expense_table_v6")
+    @Query("SELECT * FROM expense_table_v7")
     LiveData<List<Expense>> getAllExpenses();
 
-    @Query("SELECT * FROM expense_table_v6 ORDER BY expense_date asc")
+    @Query("SELECT * FROM expense_table_v7 ORDER BY expense_date asc")
     LiveData<List<Expense>> sortByDate();
 
-    @Query("SELECT * FROM expense_table_v6 ORDER BY expense_title asc")
+    @Query("SELECT * FROM expense_table_v7 ORDER BY expense_title asc")
     LiveData<List<Expense>> sortByName();
 
-    @Query("SELECT * FROM expense_table_v6 ORDER BY expense_sum asc")
+    @Query("SELECT * FROM expense_table_v7 ORDER BY expense_sum asc")
     LiveData<List<Expense>> sortBySum();
 
 }

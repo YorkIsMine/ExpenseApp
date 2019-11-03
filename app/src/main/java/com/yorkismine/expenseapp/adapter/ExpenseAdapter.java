@@ -49,7 +49,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         }
 
         //Get date in  milliseconds
-        long dateInMillis = Date.parse(expense.getDate());
+        long dateInMillis = Long.parseLong(expense.getDate());
         //Convert date to date format
         Date date = new Date(dateInMillis);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("dd MMM yyyy");

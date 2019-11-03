@@ -1,7 +1,8 @@
 package com.yorkismine.expenseapp.ui.statistics;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,14 +50,65 @@ public class StatisticsFragment extends Fragment {
 
     private void setupBarChart(View view, List<Expense> expenses) {
         List<BarEntry> barEntries = new ArrayList<>();
+//        for (int i = 0; i < expenses.size(); i++) {
+//            float y = Float.parseFloat(expenses.get(i).getSum());
+//            String x = expenses.get(i).getTitle();
+//            barEntries.add(new BarEntry(i, y));
+//        }
+        float sum = 0;
+        float animal = 0;
+        float home = 0;
+        float games = 0;
+        float food = 0;
+        float waste = 0;
+        float party = 0;
+        float friends = 0;
+
         for (int i = 0; i < expenses.size(); i++) {
-            float y = Float.parseFloat(expenses.get(i).getSum());
-            String x = expenses.get(i).getTitle();
-            barEntries.add(new BarEntry(i, y));
+            float values = Float.parseFloat(expenses.get(i).getSum());
+            switch (expenses.get(i).getIconDesc()) {
+                case "Animal":
+                    animal = animal + values;
+                    break;
+                case "Home":
+                    home = home + values;
+                    break;
+                case "Games":
+                    games = games + values;
+                    break;
+                case "Food":
+                    food = food + values;
+                    break;
+                case "Waste":
+                    waste = waste + values;
+                    break;
+                case "Party":
+                    party = party + values;
+                    break;
+                case "Friends":
+                    friends = friends + values;
+                    break;
+            }
+
         }
+        if (animal > 0) barEntries.add(new BarEntry(0, animal));
+        if (home > 0) barEntries.add(new BarEntry(1, home));
+        if (games > 0) barEntries.add(new BarEntry(2, games));
+        if (food > 0) barEntries.add(new BarEntry(3, food));
+        if (waste > 0) barEntries.add(new BarEntry(4, waste));
+        if (party > 0) barEntries.add(new BarEntry(5, party));
+        if (friends > 0) barEntries.add(new BarEntry(6, friends));
         BarDataSet dataSet = new BarDataSet(barEntries, "");
         dataSet.calcMinMax();
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        //add colors
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.colorOrange));
+        colors.add(getResources().getColor(R.color.colorPrimary));
+        colors.add(Color.RED);
+        colors.add(Color.GREEN);
+        colors.add(Color.CYAN);
+        colors.add(Color.MAGENTA);
+        dataSet.setColors(colors);
 //        dataSet.setDrawValues(true);
         dataSet.setValueTextSize(15f);
         BarData barData = new BarData(dataSet);
@@ -67,20 +119,63 @@ public class StatisticsFragment extends Fragment {
         barChart.animateY(500);
     }
 
-    // TODO set min size of item on pie
     private void setupPieChart(View view, List<Expense> expenses) {
         //Add items as entries
         List<PieEntry> pieEntries = new ArrayList<>();
+        float animal = 0;
+        float home = 0;
+        float games = 0;
+        float food = 0;
+        float waste = 0;
+        float party = 0;
+        float friends = 0;
 
         for (int i = 0; i < expenses.size(); i++) {
-            float y = Float.parseFloat(expenses.get(i).getSum());
-            String x = expenses.get(i).getTitle();
-            pieEntries.add(new PieEntry(y, x));
+            float values = Float.parseFloat(expenses.get(i).getSum());
+            switch (expenses.get(i).getIconDesc()) {
+                case "Animal":
+                    animal = animal + values;
+                    break;
+                case "Home":
+                    home = home + values;
+                    break;
+                case "Games":
+                    games = games + values;
+                    break;
+                case "Food":
+                    food = food + values;
+                    break;
+                case "Waste":
+                    waste = waste + values;
+                    break;
+                case "Party":
+                    party = party + values;
+                    break;
+                case "Friends":
+                    friends = friends + values;
+                    break;
+            }
         }
-        String[] colors = {"#FFF000", "#CCCFFF"};
+        if (animal > 0) pieEntries.add(new PieEntry(animal, "Animal"));
+        if (home > 0) pieEntries.add(new PieEntry(home, "Home"));
+        if (games > 0) pieEntries.add(new PieEntry(games, "Games"));
+        if (food > 0) pieEntries.add(new PieEntry(food, "Food"));
+        if (waste > 0) pieEntries.add(new PieEntry(waste, "Waste"));
+        if (party > 0) pieEntries.add(new PieEntry(party, "Party"));
+        if (friends > 0) pieEntries.add(new PieEntry(friends, "Friends"));
+
+
         PieDataSet dataSet = new PieDataSet(pieEntries, "");
         dataSet.setSliceSpace(1f);
-        dataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        //add colors
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.colorOrange));
+        colors.add(getResources().getColor(R.color.colorPrimary));
+        colors.add(Color.RED);
+        colors.add(Color.GREEN);
+        colors.add(Color.CYAN);
+        colors.add(Color.MAGENTA);
+        dataSet.setColors(colors);
         dataSet.setDrawValues(false);
         dataSet.setSelectionShift(10f);
 

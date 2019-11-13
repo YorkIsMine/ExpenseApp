@@ -69,14 +69,7 @@ public class HomeFragment extends Fragment {
 
         //Define dropdown Spinner
         final String[] data = {"Month", "Today", "Week", "Year"};
-        mAdapter = new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {
-            //Set textColor
-            public View getView(int position, View convertView, ViewGroup parent) {
-                TextView tv = (TextView) super.getView(position, convertView, parent);
-                tv.setTextColor(parent.getResources().getColor(R.color.colorPrimary));
-                return tv;
-            }
-        };
+        mAdapter = homeViewModel.getGridAdapter(root, data);
 
         Spinner spinner = root.findViewById(R.id.home_spinner);
         spinner.setAdapter(mAdapter);
@@ -86,80 +79,12 @@ public class HomeFragment extends Fragment {
         final ExpenseAdapter adapter = new ExpenseAdapter();
         recyclerView.setAdapter(adapter);
 
+        final HomeViewModel homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(final AdapterView<?> parent, View view, final int position, long id) {
-
-                expenseViewModel = ViewModelProviders.of(HomeFragment.this).get(ExpenseViewModel.class);
-                expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
-                    @Override
-                    public void onChanged(final List<Expense> expenses) {
-                        final List<Expense> byDate = new ArrayList<>();
-                        Date currDate = new Date();
-
-                        for (int i = 0; i < expenses.size(); i++) {
-
-                            String currentDate = parent.getItemAtPosition(position).toString();
-                            String fromItem = expenses.get(i).getDate();
-
-                            switch (currentDate) {
-                                case "Month": {
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat monthS = new SimpleDateFormat("MM");
-                                    Date dateFrom = new Date(Long.parseLong(fromItem));
-                                    if (monthS.format(dateFrom).equals(monthS.format(currDate))) {
-                                        byDate.add(expenses.get(i));
-                                    }
-                                    break;
-                                }
-                                case "Year": {
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat yearS = new SimpleDateFormat("yy");
-                                    Date dateFrom = new Date(Long.parseLong(fromItem));
-                                    if (yearS.format(dateFrom).equals(yearS.format(currDate))) {
-                                        byDate.add(expenses.get(i));
-                                    }
-                                    break;
-                                }
-                                case "Today": {
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat dayS = new SimpleDateFormat("dd MM yy");
-                                    Date dateFrom = new Date(Long.parseLong(fromItem));
-                                    if (dayS.format(dateFrom).equals(dayS.format(currDate))) {
-                                        byDate.add(expenses.get(i));
-                                    }
-                                    break;
-                                }
-                                case "Week": {
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat weekS = new SimpleDateFormat("w");
-                                    Date dateFrom = new Date(Long.parseLong(fromItem));
-                                    if (weekS.format(dateFrom).equals(weekS.format(currDate))) {
-                                        byDate.add(expenses.get(i));
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                        adapter.setExpenses(byDate);
-
-                        // Add sorting by request
-                        btnByDate.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                adapter.setExpenses(sortByDate(byDate));
-                            }
-                        });
-                        btnByName.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                adapter.setExpenses(sortByName(byDate));
-                            }
-                        });
-                        btnBySum.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                adapter.setExpenses(sortBySum(byDate));
-                            }
-                        });
-                    }
-                });
+                homeViewModel.setupSpinner(parent, position, HomeFragment.this, adapter, btnBySum, btnByName, btnByDate);
             }
 
             @Override
@@ -177,66 +102,10 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                expenseViewModel.delete(adapter.expenseAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(getActivity(), "Expense was deleted", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }).attachToRecyclerView(recyclerView);
+        homeViewModel.setupLogicOfSwipe(expenseViewModel, getActivity(), adapter, recyclerView);
 
         return root;
     }
 
-    private List<Expense> sortByDate(List<Expense> byDate) {
-        Collections.sort(byDate, new Comparator<Expense>() {
-            @Override
-            public int compare(Expense o1, Expense o2) {
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
-        return byDate;
-    }
-    private List<Expense> sortByName(List<Expense> byDate) {
-        Collections.sort(byDate, new Comparator<Expense>() {
-            @Override
-            public int compare(Expense o1, Expense o2) {
-                return o1.getTitle().compareTo(o2.getTitle());
-            }
-        });
-        return byDate;
-    }
-    private List<Expense> sortBySum(List<Expense> byDate) {
-        Collections.sort(byDate, new Comparator<Expense>() {
-            @Override
-            public int compare(Expense o1, Expense o2) {
-                return o1.getSum().compareTo(o2.getSum());
-            }
-        });
-        return byDate;
-    }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == EXTRA_CODE_REQUEST && resultCode == RESULT_OK) {
-            String title = data.getStringExtra(EXTRA_TITLE);
-            String desc = data.getStringExtra(EXTRA_DESC);
-            String sum = data.getStringExtra(EXTRA_SUM);
-            String date = data.getStringExtra(EXTRA_DATE);
-            String iconDesc = data.getStringExtra(EXTRA_ICON_DESC);
-            int icon = data.getIntExtra(EXTRA_ICON, DEFAULT_VALUE);
-
-            Expense expense = new Expense(title, desc, sum, EXTRA_CURRENCY, date, icon, iconDesc);
-            expenseViewModel.insert(expense);
-        }
-    }
 }

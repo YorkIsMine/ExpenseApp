@@ -12,12 +12,22 @@ public abstract class ExpenseDatabase extends RoomDatabase {
 
     public abstract ExpenseDAO expenseDAO();
 
-    public static synchronized ExpenseDatabase getInstance(Context context){
-        if(instance == null){
-            instance = Room.databaseBuilder(context.getApplicationContext(),
-                    ExpenseDatabase.class, "expense_table_v7").build();
+    public static void init(Context context) {
+        if (instance == null) {
+            instance = Room.databaseBuilder(
+                    context.getApplicationContext(),
+                    ExpenseDatabase.class,
+                    "expense_table_v7"
+            ).build();
+        } else {
+            throw new DatabaseAlreadyInitializedException();
         }
+    }
 
-        return instance;
+    public static synchronized ExpenseDatabase getInstance() {
+        if(instance != null)
+            return instance;
+        else
+            throw new DatabaseAlreadyInitializedException();
     }
 }

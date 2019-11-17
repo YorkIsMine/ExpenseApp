@@ -85,13 +85,14 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
 
     private class ExchangeHandlerBase extends DefaultHandler{
         List<ExchangeRate> exRates;
-        ExchangeRate rate;
+        ExchangeRateDto rate;
         String data;
 
         boolean exStart;
         boolean bVcurs;
         boolean bVname;
         boolean bVchCode;
+        boolean bVnom;
 
         public List<ExchangeRate> getExRates() {
             return exRates;
@@ -100,8 +101,7 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if (qName.equalsIgnoreCase("ValuteCursOnDate")) {
-                exStart = true;
-                rate = new ExchangeRate();
+                rate = new ExchangeRateDto();
                 // initialize list
                 if (exRates == null)
                     exRates = new ArrayList<>();
@@ -111,6 +111,8 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
                 bVcurs = true;
             } else if (qName.equalsIgnoreCase("VchCode")){
                 bVchCode = true;
+            } else if (qName.equalsIgnoreCase("Vnom")){
+                bVnom = true;
             }
             data = "";
         }
@@ -124,6 +126,10 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
                 rate.setRate(Double.parseDouble(data));
                 bVcurs = false;
             }
+            if(bVnom){
+                rate.setNom(Double.parseDouble(data));
+                bVnom = false;
+            }
             if(bVchCode) {
                 try{
                     rate.setCurrency(Currency.valueOf(data));
@@ -132,15 +138,60 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
                 }
                 bVchCode = false;
             }
-            if(exStart){
+            if(qName.equalsIgnoreCase("ValuteCursOnDate")){
+                ExchangeRate rate = new ExchangeRate();
+                rate.setCurrency(this.rate.getCurrency());
+                rate.setRate(this.rate.getRate()/this.rate.getNom());
+                rate.setName(this.rate.getName());
                 exRates.add(rate);
-                exStart = false;
             }
         }
 
         @Override
         public void characters(char ch[], int start, int length) throws SAXException {
             data += new String(ch, start, length);
+        }
+    }
+
+    private class ExchangeRateDto{
+        String name;
+        double nom;
+        double rate;
+        Currency currency;
+
+        public ExchangeRateDto() {
+        }
+
+        public double getNom() {
+            return nom;
+        }
+
+        public void setNom(double nom) {
+            this.nom = nom;
+        }
+
+        public double getRate() {
+            return rate;
+        }
+
+        public void setRate(double rate) {
+            this.rate = rate;
+        }
+
+        public Currency getCurrency() {
+            return currency;
+        }
+
+        public void setCurrency(Currency currency) {
+            this.currency = currency;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }

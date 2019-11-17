@@ -1,4 +1,9 @@
 package com.yorkismine.expenseapp.utils;
 
-public class Currency {
+public enum Currency {
+    USD,
+    RUB,
+    CNY,
+    UAH,
+    OTH
 }

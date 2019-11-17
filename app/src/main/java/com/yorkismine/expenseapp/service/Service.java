@@ -1,4 +1,5 @@
 package com.yorkismine.expenseapp.service;
 
-public interface SOAPService {
+public interface Service<D> {
+    D load();
 }

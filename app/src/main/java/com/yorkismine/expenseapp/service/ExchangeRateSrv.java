@@ -4,6 +4,9 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.yorkismine.expenseapp.model.ExchangeRate;
+import com.yorkismine.expenseapp.utils.Currency;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -15,6 +18,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -23,7 +28,7 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
-public class ExchangeRate implements Service<List<ExchangeRate>> {
+public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
 
 
 
@@ -32,8 +37,13 @@ public class ExchangeRate implements Service<List<ExchangeRate>> {
         try {
             InputStream response = getData();
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-            parser.parse(response, );
-            return getData();
+            ExchangeHandlerBase handler = new ExchangeHandlerBase();
+            parser.parse(response, handler);
+            for(int i = 0; i < handler.getExRates().size(); i++){
+                if(handler.getExRates().get(i).getCurrency()==Currency.OTH)
+                    handler.getExRates().remove(i--);
+            }
+            return handler.getExRates();
         } catch (IOException | ParserConfigurationException | SAXException e) {
             throw new RuntimeException(e);
         }
@@ -74,29 +84,63 @@ public class ExchangeRate implements Service<List<ExchangeRate>> {
     }
 
     private class ExchangeHandlerBase extends DefaultHandler{
-        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        List<ExchangeRate> exRates;
+        ExchangeRate rate;
+        String data;
 
+        boolean exStart;
+        boolean bVcurs;
+        boolean bVname;
+        boolean bVchCode;
+
+        public List<ExchangeRate> getExRates() {
+            return exRates;
+        }
+
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             if (qName.equalsIgnoreCase("ValuteCursOnDate")) {
-                // create a new Employee and put it in Map
-                String id = attributes.getValue("id");
-                // initialize Employee object and set id attribute
-                emp = new Employee();
-                emp.setId(Integer.parseInt(id));
+                exStart = true;
+                rate = new ExchangeRate();
                 // initialize list
-                if (empList == null)
-                    empList = new ArrayList<>();
-            } else if (qName.equalsIgnoreCase("name")) {
-                // set boolean values for fields, will be used in setting Employee variables
-                bName = true;
-            } else if (qName.equalsIgnoreCase("age")) {
-                bAge = true;
-            } else if (qName.equalsIgnoreCase("gender")) {
-                bGender = true;
-            } else if (qName.equalsIgnoreCase("role")) {
-                bRole = true;
+                if (exRates == null)
+                    exRates = new ArrayList<>();
+            } else if (qName.equalsIgnoreCase("Vname")) {
+                bVname = true;
+            } else if (qName.equalsIgnoreCase("Vcurs")){
+                bVcurs = true;
+            } else if (qName.equalsIgnoreCase("VchCode")){
+                bVchCode = true;
             }
-            // create the data container
-            data = new StringBuilder();
+            data = "";
+        }
+
+        public void endElement(String uri, String localName, String qName) throws SAXException {
+            if(bVname) {
+                rate.setName(data);
+                bVname = false;
+            }
+            if(bVcurs) {
+                rate.setRate(Double.parseDouble(data));
+                bVcurs = false;
+            }
+            if(bVchCode) {
+                try{
+                    rate.setCurrency(Currency.valueOf(data));
+                }catch (IllegalArgumentException e){
+                    rate.setCurrency(Currency.OTH);
+                }
+                bVchCode = false;
+            }
+            if(exStart){
+                exRates.add(rate);
+                exStart = false;
+            }
+        }
+
+        @Override
+        public void characters(char ch[], int start, int length) throws SAXException {
+            data += new String(ch, start, length);
         }
     }
 }

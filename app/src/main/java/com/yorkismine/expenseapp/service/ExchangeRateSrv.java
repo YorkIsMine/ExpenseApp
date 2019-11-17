@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.parsers.ParserConfigurationException;
@@ -35,7 +36,13 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
     @Override
     public List<ExchangeRate> load() {
         try {
-            InputStream response = getData();
+            Callable<InputStream> callable = new Callable<InputStream>() {
+                @Override
+                public InputStream call() throws Exception {
+                    return getData();
+                }
+            };
+            InputStream response = callable.call();
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             ExchangeHandlerBase handler = new ExchangeHandlerBase();
             parser.parse(response, handler);
@@ -44,7 +51,7 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
                     handler.getExRates().remove(i--);
             }
             return handler.getExRates();
-        } catch (IOException | ParserConfigurationException | SAXException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

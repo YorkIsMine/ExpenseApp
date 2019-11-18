@@ -10,6 +10,11 @@ import java.util.List;
 public class SettingsViewModel extends ViewModel {
 
     private MutableLiveData<List<String>> mCurrencies;
+    private SettingsRepositoryImpl repository;
+
+    public SettingsViewModel(){
+        repository = new SettingsRepositoryImpl();
+    }
 
     public LiveData<List<String>> getCurrencies() {
         return mCurrencies;

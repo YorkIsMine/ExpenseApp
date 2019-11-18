@@ -31,41 +31,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settings_tv_title" />
 
-    <RadioButton
-        android:id="@+id/settings_rb_usd"
+    <RadioGroup
+        android:id="@+id/settings_rg_currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:checked="true"
-        android:text="@string/usd"
+        android:orientation="horizontal"
+        android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@+id/settings_tv_currency"
-        app:layout_constraintTop_toTopOf="@+id/settings_tv_currency" />
+        app:layout_constraintTop_toTopOf="@+id/settings_tv_currency">
+        <RadioButton
+            android:id="@+id/settings_rb_usd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/usd" />
 
-    <RadioButton
-        android:id="@+id/settings_rb_rub"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/rub"
-        app:layout_constraintStart_toEndOf="@+id/settings_rb_usd"
-        app:layout_constraintTop_toTopOf="@+id/settings_rb_usd" />
+        <RadioButton
+            android:id="@+id/settings_rb_rub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/rub" />
 
-    <RadioButton
-        android:id="@+id/settings_rb_eur"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/eur"
-        app:layout_constraintStart_toEndOf="@+id/settings_rb_rub"
-        app:layout_constraintTop_toTopOf="@+id/settings_rb_rub" />
+        <RadioButton
+            android:id="@+id/settings_rb_eur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/eur" />
 
-    <RadioButton
-        android:id="@+id/settings_rb_yen"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="@string/yen"
-        app:layout_constraintStart_toEndOf="@+id/settings_rb_eur"
-        app:layout_constraintTop_toTopOf="@+id/settings_rb_eur" />
+        <RadioButton
+            android:id="@+id/settings_rb_yen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/yen" />
+        </RadioGroup>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

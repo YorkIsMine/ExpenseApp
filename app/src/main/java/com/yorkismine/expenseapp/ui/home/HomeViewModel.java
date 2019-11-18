@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
+import com.yorkismine.expenseapp.model.ExpenseDatabase;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
 
 import java.text.SimpleDateFormat;
@@ -38,8 +39,7 @@ public class HomeViewModel extends ViewModel {
                               Fragment fragment, final ExpenseAdapter adapter,
                               final Button btnBySum, final Button btnByName, final Button btnByDate){
 
-        ExpenseViewModel expenseViewModel = ViewModelProviders.of(fragment).get(ExpenseViewModel.class);
-        expenseViewModel.getAllExpenses().observe(fragment, new Observer<List<Expense>>() {
+        ExpenseDatabase.getInstance().expenseDAO().getAllExpenses().observe(fragment, new Observer<List<Expense>>() {
             @Override
             public void onChanged(final List<Expense> expenses) {
                 final List<Expense> byDate = new ArrayList<>();
@@ -110,22 +110,6 @@ public class HomeViewModel extends ViewModel {
         });
     }
 
-    public void setupLogicOfSwipe(final ExpenseViewModel expenseViewModel, final Context context, final ExpenseAdapter adapter, RecyclerView recyclerView){
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
-                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                expenseViewModel.delete(adapter.expenseAt(viewHolder.getAdapterPosition()));
-                Toast.makeText(context, "Expense was deleted", Toast.LENGTH_SHORT)
-                        .show();
-            }
-        }).attachToRecyclerView(recyclerView);
-    }
 
     public ArrayAdapter<String> getGridAdapter(View root, String[] data){
         return new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {

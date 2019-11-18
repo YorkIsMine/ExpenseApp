@@ -11,19 +11,12 @@ import java.util.List;
 
 public class ExpenseRepository {
     private LiveData<List<Expense>> allExpenses;
-    private LiveData<List<Expense>> sortByDate;
-    private LiveData<List<Expense>> sortByName;
-    private LiveData<List<Expense>> sortBySum;
     private ExpenseDAO expenseDAO;
-    private ExpenseRepository instance;
 
-    public ExpenseRepository(Context context){
-        ExpenseDatabase database = ExpenseDatabase.getInstance(context);
+    public ExpenseRepository(){
+        ExpenseDatabase database = ExpenseDatabase.getInstance();
         expenseDAO = database.expenseDAO();
         allExpenses = expenseDAO.getAllExpenses();
-        sortByDate = expenseDAO.sortByDate();
-        sortByName = expenseDAO.sortByName();
-        sortBySum = expenseDAO.sortBySum();
     }
 
     public void insert(Expense expense){
@@ -45,18 +38,6 @@ public class ExpenseRepository {
     public LiveData<List<Expense>> getAllExpenses(){
         return allExpenses;
     }
-
-    public LiveData<List<Expense>> sortByDate(){
-        return sortByDate;
-    }
-    public LiveData<List<Expense>> sortByName(){
-        return sortByName;
-    }
-    public LiveData<List<Expense>> sortBySum(){
-        return sortBySum;
-    }
-
-
 
 
     private static class InsertExpenseAsyncTask extends AsyncTask<Expense, Void, Void>{
@@ -114,8 +95,5 @@ public class ExpenseRepository {
             return null;
         }
     }
-
-
-
 
 }

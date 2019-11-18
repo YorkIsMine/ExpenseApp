@@ -17,7 +17,7 @@ public class StatisticsViewModel extends AndroidViewModel {
 
     public StatisticsViewModel(Application application) {
         super(application);
-        repository = new ExpenseRepository(application);
+        repository = new ExpenseRepository();
         allExpenses = repository.getAllExpenses();
     }
 

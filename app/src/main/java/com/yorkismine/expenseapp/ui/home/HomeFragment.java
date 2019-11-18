@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.AddExpenseActivity;
 import com.yorkismine.expenseapp.AddExpenseBottomDialog;
+import com.yorkismine.expenseapp.MainActivity;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
@@ -60,6 +61,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
+
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         //Add  buttons to sorting by
@@ -78,8 +80,6 @@ public class HomeFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         final ExpenseAdapter adapter = new ExpenseAdapter();
         recyclerView.setAdapter(adapter);
-
-        final HomeViewModel homeViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -102,7 +102,21 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        homeViewModel.setupLogicOfSwipe(expenseViewModel, getActivity(), adapter, recyclerView);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                expenseViewModel.delete(adapter.expenseAt(viewHolder.getAdapterPosition()));
+                Toast.makeText(getActivity(), "Expense was deleted", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }).attachToRecyclerView(recyclerView);
+
 
         return root;
     }

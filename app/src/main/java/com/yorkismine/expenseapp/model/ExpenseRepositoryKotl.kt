@@ -6,18 +6,12 @@ import androidx.lifecycle.LiveData
 
 class ExpenseRepositoryKotl(context: Context) {
     val allExpenses: LiveData<List<ExpenseKotl>>
-    private val sortByDate: LiveData<List<ExpenseKotl>>
-    private val sortByName: LiveData<List<ExpenseKotl>>
-    private val sortBySum: LiveData<List<ExpenseKotl>>
     private val expenseDAOKotl: ExpenseDAOKotl
 
     init {
         val database = ExpenseDatabaseKotl.getInstance(context)
         expenseDAOKotl = database?.expenseDAOKotl()!!
         allExpenses = expenseDAOKotl.allExpenses
-        sortByDate = expenseDAOKotl.sortByDate()
-        sortByName = expenseDAOKotl.sortByName()
-        sortBySum = expenseDAOKotl.sortBySum()
     }
 
     fun insert(expense: ExpenseKotl) {
@@ -35,19 +29,6 @@ class ExpenseRepositoryKotl(context: Context) {
     fun deleteAllExpenses() {
         DeleteAllExpensesAsyncTask(expenseDAOKotl).execute()
     }
-
-    fun sortByDate(): LiveData<List<ExpenseKotl>> {
-        return sortByDate
-    }
-
-    fun sortByName(): LiveData<List<ExpenseKotl>> {
-        return sortByName
-    }
-
-    fun sortBySum(): LiveData<List<ExpenseKotl>> {
-        return sortBySum
-    }
-
 
     private class InsertExpenseAsyncTask(private val expenseDAO: ExpenseDAOKotl) : AsyncTask<ExpenseKotl, Void, Void>() {
 

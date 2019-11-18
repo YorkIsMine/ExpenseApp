@@ -1,16 +1,15 @@
 package com.yorkismine.expenseapp.service;
 
 import android.os.Build;
-
 import androidx.annotation.RequiresApi;
-
 import com.yorkismine.expenseapp.model.ExchangeRate;
 import com.yorkismine.expenseapp.utils.Currency;
-
 import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -19,35 +18,23 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
-
-import javax.net.ssl.HttpsURLConnection;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 @RequiresApi(api = Build.VERSION_CODES.O)
 public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
 
 
-
     @Override
     public List<ExchangeRate> load() {
         try {
-            Callable<InputStream> callable = new Callable<InputStream>() {
-                @Override
-                public InputStream call() throws Exception {
-                    return getData();
-                }
-            };
+            Callable<InputStream> callable = this::getData;
             InputStream response = callable.call();
             SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
             ExchangeHandlerBase handler = new ExchangeHandlerBase();
             parser.parse(response, handler);
-            for(int i = 0; i < handler.getExRates().size(); i++){
-                if(handler.getExRates().get(i).getCurrency()==Currency.OTH)
+            for (int i = 0; i < handler.getExRates().size(); i++) {
+                if (handler.getExRates().get(i).getCurrency() == Currency.OTH)
                     handler.getExRates().remove(i--);
             }
             return handler.getExRates();
@@ -77,36 +64,35 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
                 "  </soap:Body>\n" +
                 "</soap:Envelope>");
         conn.connect();
-        if(conn.getResponseCode()==200)
+        if (conn.getResponseCode() == 200)
             return conn.getInputStream();
-        else{
-            String error = "";
+        else {
+            StringBuilder error = new StringBuilder();
             BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
-            while (reader.ready()){
-                error += reader.readLine();
+            while (reader.ready()) {
+                error.append(reader.readLine());
             }
             throw new RuntimeException(conn.getResponseCode() + " " +
                     conn.getResponseMessage() + "\n" + error);
         }
     }
 
-    private class ExchangeHandlerBase extends DefaultHandler{
-        List<ExchangeRate> exRates;
-        ExchangeRateDto rate;
-        String data;
+    private class ExchangeHandlerBase extends DefaultHandler {
+        private List<ExchangeRate> exRates;
+        private ExchangeRateDto rate;
+        private String data;
 
-        boolean exStart;
-        boolean bVcurs;
-        boolean bVname;
-        boolean bVchCode;
-        boolean bVnom;
+        private boolean bVcurs;
+        private boolean bVname;
+        private boolean bVchCode;
+        private boolean bVnom;
 
-        public List<ExchangeRate> getExRates() {
+        List<ExchangeRate> getExRates() {
             return exRates;
         }
 
         @Override
-        public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
+        public void startElement(String uri, String localName, String qName, Attributes attributes) {
             if (qName.equalsIgnoreCase("ValuteCursOnDate")) {
                 rate = new ExchangeRateDto();
                 // initialize list
@@ -114,90 +100,90 @@ public class ExchangeRateSrv implements Service<List<ExchangeRate>> {
                     exRates = new ArrayList<>();
             } else if (qName.equalsIgnoreCase("Vname")) {
                 bVname = true;
-            } else if (qName.equalsIgnoreCase("Vcurs")){
+            } else if (qName.equalsIgnoreCase("Vcurs")) {
                 bVcurs = true;
-            } else if (qName.equalsIgnoreCase("VchCode")){
+            } else if (qName.equalsIgnoreCase("VchCode")) {
                 bVchCode = true;
-            } else if (qName.equalsIgnoreCase("Vnom")){
+            } else if (qName.equalsIgnoreCase("Vnom")) {
                 bVnom = true;
             }
             data = "";
         }
 
-        public void endElement(String uri, String localName, String qName) throws SAXException {
-            if(bVname) {
+        public void endElement(String uri, String localName, String qName) {
+            if (bVname) {
                 rate.setName(data);
                 bVname = false;
             }
-            if(bVcurs) {
+            if (bVcurs) {
                 rate.setRate(Double.parseDouble(data));
                 bVcurs = false;
             }
-            if(bVnom){
+            if (bVnom) {
                 rate.setNom(Double.parseDouble(data));
                 bVnom = false;
             }
-            if(bVchCode) {
-                try{
+            if (bVchCode) {
+                try {
                     rate.setCurrency(Currency.valueOf(data));
-                }catch (IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     rate.setCurrency(Currency.OTH);
                 }
                 bVchCode = false;
             }
-            if(qName.equalsIgnoreCase("ValuteCursOnDate")){
+            if (qName.equalsIgnoreCase("ValuteCursOnDate")) {
                 ExchangeRate rate = new ExchangeRate();
                 rate.setCurrency(this.rate.getCurrency());
-                rate.setRate(this.rate.getRate()/this.rate.getNom());
+                rate.setRate(this.rate.getRate() / this.rate.getNom());
                 rate.setName(this.rate.getName());
                 exRates.add(rate);
             }
         }
 
         @Override
-        public void characters(char ch[], int start, int length) throws SAXException {
+        public void characters(char[] ch, int start, int length) {
             data += new String(ch, start, length);
         }
     }
 
-    private class ExchangeRateDto{
+    private class ExchangeRateDto {
         String name;
         double nom;
         double rate;
         Currency currency;
 
-        public ExchangeRateDto() {
+        ExchangeRateDto() {
         }
 
-        public double getNom() {
+        double getNom() {
             return nom;
         }
 
-        public void setNom(double nom) {
+        void setNom(double nom) {
             this.nom = nom;
         }
 
-        public double getRate() {
+        double getRate() {
             return rate;
         }
 
-        public void setRate(double rate) {
+        void setRate(double rate) {
             this.rate = rate;
         }
 
-        public Currency getCurrency() {
+        Currency getCurrency() {
             return currency;
         }
 
-        public void setCurrency(Currency currency) {
+        void setCurrency(Currency currency) {
             this.currency = currency;
         }
 
-        public String getName() {
+        String getName() {
             return name;
         }
 
-        public void setName(String name) {
+        void setName(String name) {
             this.name = name;
         }
     }

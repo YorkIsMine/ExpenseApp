@@ -8,6 +8,7 @@ public class Constants{
     public static final String EXTRA_TYPE = "TYPE";
     public static final String EXTRA_ICON = "ICON";
     public static final String EXTRA_ICON_DESC = "ICON_DESC";
+    public static final String PREF_CURRENCY_TYPE = "CurrencyType";
     public static String EXTRA_CURRENCY = "$";
     public static final String EXTRA_CURRENCY_RUB = "р";
     public static final String EXTRA_CURRENCY_USD = "$";

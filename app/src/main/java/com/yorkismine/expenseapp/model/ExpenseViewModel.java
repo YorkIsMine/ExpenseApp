@@ -17,7 +17,7 @@ public class ExpenseViewModel extends AndroidViewModel {
 
     public ExpenseViewModel(@NonNull Application application) {
         super(application);
-        repository = new ExpenseRepository(application);
+        repository = new ExpenseRepositoryImpl(application);
         allExpenses = repository.getAllExpenses();
         sortByDate = repository.sortByDate();
         sortByName = repository.sortByName();

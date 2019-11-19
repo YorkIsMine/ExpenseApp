@@ -15,7 +15,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     private ExpenseDAO expenseDAO;
     private ExpenseRepositoryImpl instance;
 
-    public ExpenseRepositoryImpl(Context context){
+    public ExpenseRepositoryImpl(Context context) {
         ExpenseDatabase database = ExpenseDatabase.getInstance(context);
         expenseDAO = database.expenseDAO();
         allExpenses = expenseDAO.getAllExpenses();
@@ -65,7 +65,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
 
 
 
-    private static class InsertExpenseAsyncTask extends AsyncTask<Expense, Void, Void>{
+    private static class InsertExpenseAsyncTask extends AsyncTask<Expense, Void, Void> {
         private ExpenseDAO expenseDAO;
 
         public InsertExpenseAsyncTask(ExpenseDAO expenseDAO) {
@@ -79,7 +79,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
         }
     }
 
-    private static class UpdateExpenseAsyncTask extends AsyncTask<Expense, Void, Void>{
+    private static class UpdateExpenseAsyncTask extends AsyncTask<Expense, Void, Void> {
         private ExpenseDAO expenseDAO;
 
         public UpdateExpenseAsyncTask(ExpenseDAO expenseDAO) {
@@ -93,7 +93,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
         }
     }
 
-    private static class DeleteExpenseAsyncTask extends AsyncTask<Expense, Void, Void>{
+    private static class DeleteExpenseAsyncTask extends AsyncTask<Expense, Void, Void> {
         private ExpenseDAO expenseDAO;
 
         public DeleteExpenseAsyncTask(ExpenseDAO expenseDAO) {
@@ -107,7 +107,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
         }
     }
 
-    private static class DeleteAllExpensesAsyncTask extends AsyncTask<Void, Void, Void>{
+    private static class DeleteAllExpensesAsyncTask extends AsyncTask<Void, Void, Void> {
         private ExpenseDAO expenseDAO;
 
         public DeleteAllExpensesAsyncTask(ExpenseDAO expenseDAO) {

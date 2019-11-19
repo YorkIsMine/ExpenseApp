@@ -25,40 +25,40 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     }
 
     @Override
-    public void insert(Expense expense){
+    public void insert(Expense expense) {
         new InsertExpenseAsyncTask(expenseDAO).execute(expense);
     }
 
     @Override
-    public void update(Expense expense){
+    public void update(Expense expense) {
         new UpdateExpenseAsyncTask(expenseDAO).execute(expense);
     }
 
     @Override
-    public void delete(Expense expense){
+    public void delete(Expense expense) {
         new DeleteExpenseAsyncTask(expenseDAO).execute(expense);
     }
 
     @Override
-    public void deleteAllExpenses(){
+    public void deleteAllExpenses() {
         new DeleteAllExpensesAsyncTask(expenseDAO).execute();
     }
 
     @Override
-    public LiveData<List<Expense>> getAllExpenses(){
+    public LiveData<List<Expense>> getAllExpenses() {
         return allExpenses;
     }
 
     @Override
-    public LiveData<List<Expense>> sortByDate(){
+    public LiveData<List<Expense>> sortByDate() {
         return sortByDate;
     }
     @Override
-    public LiveData<List<Expense>> sortByName(){
+    public LiveData<List<Expense>> sortByName() {
         return sortByName;
     }
     @Override
-    public LiveData<List<Expense>> sortBySum(){
+    public LiveData<List<Expense>> sortBySum() {
         return sortBySum;
     }
 

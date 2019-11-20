@@ -2,7 +2,6 @@ package com.yorkismine.expenseapp.ui.statistics;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.model.Expense;
 
@@ -65,7 +63,7 @@ public class StatisticsFragment extends Fragment {
         float friends = 0;
 
         for (int i = 0; i < expenses.size(); i++) {
-            float values = Float.parseFloat(expenses.get(i).getSum());
+            float values = expenses.get(i).getSum();
             switch (expenses.get(i).getIconDesc()) {
                 case "Animal":
                     animal = animal + values;
@@ -131,7 +129,7 @@ public class StatisticsFragment extends Fragment {
         float friends = 0;
 
         for (int i = 0; i < expenses.size(); i++) {
-            float values = Float.parseFloat(expenses.get(i).getSum());
+            float values = expenses.get(i).getSum();
             switch (expenses.get(i).getIconDesc()) {
                 case "Animal":
                     animal = animal + values;

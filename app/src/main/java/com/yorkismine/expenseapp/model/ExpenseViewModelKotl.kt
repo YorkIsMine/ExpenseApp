@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 
 class ExpenseViewModelKotl(application: Application) : AndroidViewModel(application) {
-    val allExpenses: LiveData<List<ExpenseKotl>>
+    val allExpenses: LiveData<List<Expense>>
     private val repository: ExpenseRepositoryKotl
 
     init {
@@ -13,15 +13,15 @@ class ExpenseViewModelKotl(application: Application) : AndroidViewModel(applicat
         allExpenses = repository.allExpenses
     }
 
-    fun insert(expense: ExpenseKotl) {
+    fun insert(expense: Expense) {
         repository.insert(expense)
     }
 
-    fun update(expense: ExpenseKotl) {
+    fun update(expense: Expense) {
         repository.update(expense)
     }
 
-    fun delete(expense: ExpenseKotl) {
+    fun delete(expense: Expense) {
         repository.delete(expense)
     }
 

@@ -13,7 +13,6 @@ import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.*
 import com.yorkismine.expenseapp.R
 import com.yorkismine.expenseapp.model.Expense
-import com.yorkismine.expenseapp.model.ExpenseKotl
 import java.util.ArrayList
 
 class StatisticsFragmentKotl : Fragment() {
@@ -33,7 +32,7 @@ class StatisticsFragmentKotl : Fragment() {
         return root
     }
 
-    private fun setupBarChart(view: View, expenses: List<ExpenseKotl>) {
+    private fun setupBarChart(view: View, expenses: List<Expense>) {
         val barEntries = ArrayList<BarEntry>()
         //        for (int i = 0; i < expenses.size(); i++) {
         //            float y = Float.parseFloat(expenses.get(i).getSum());
@@ -90,7 +89,7 @@ class StatisticsFragmentKotl : Fragment() {
         barChart!!.animateY(500)
     }
 
-    private fun setupPieChart(view: View, expenses: List<ExpenseKotl>) {
+    private fun setupPieChart(view: View, expenses: List<Expense>) {
         //Add items as entries
         val pieEntries = ArrayList<PieEntry>()
         var animal = 0f

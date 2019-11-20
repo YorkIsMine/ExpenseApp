@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [ExpenseKotl::class], version = 1, exportSchema = false)
+@Database(entities = [Expense::class], version = 1, exportSchema = false)
 abstract class ExpenseDatabaseKotl : RoomDatabase() {
 
     abstract fun expenseDAOKotl(): ExpenseDAOKotl

@@ -1,30 +1,21 @@
 package com.yorkismine.expenseapp.ui.home;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseDatabase;
-import com.yorkismine.expenseapp.model.ExpenseViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,12 +39,12 @@ public class HomeViewModel extends ViewModel {
                 for (int i = 0; i < expenses.size(); i++) {
 
                     String currentDate = parent.getItemAtPosition(position).toString();
-                    String fromItem = expenses.get(i).getDate();
+                    long fromItem = expenses.get(i).getDate();
 
                     switch (currentDate) {
                         case "Month": {
                             @SuppressLint("SimpleDateFormat") SimpleDateFormat monthS = new SimpleDateFormat("MM");
-                            Date dateFrom = new Date(Long.parseLong(fromItem));
+                            Date dateFrom = new Date(fromItem);
                             if (monthS.format(dateFrom).equals(monthS.format(currDate))) {
                                 byDate.add(expenses.get(i));
                             }
@@ -61,7 +52,7 @@ public class HomeViewModel extends ViewModel {
                         }
                         case "Year": {
                             @SuppressLint("SimpleDateFormat") SimpleDateFormat yearS = new SimpleDateFormat("yy");
-                            Date dateFrom = new Date(Long.parseLong(fromItem));
+                            Date dateFrom = new Date(fromItem);
                             if (yearS.format(dateFrom).equals(yearS.format(currDate))) {
                                 byDate.add(expenses.get(i));
                             }
@@ -69,7 +60,7 @@ public class HomeViewModel extends ViewModel {
                         }
                         case "Today": {
                             @SuppressLint("SimpleDateFormat") SimpleDateFormat dayS = new SimpleDateFormat("dd MM yy");
-                            Date dateFrom = new Date(Long.parseLong(fromItem));
+                            Date dateFrom = new Date(fromItem);
                             if (dayS.format(dateFrom).equals(dayS.format(currDate))) {
                                 byDate.add(expenses.get(i));
                             }
@@ -77,7 +68,7 @@ public class HomeViewModel extends ViewModel {
                         }
                         case "Week": {
                             @SuppressLint("SimpleDateFormat") SimpleDateFormat weekS = new SimpleDateFormat("w");
-                            Date dateFrom = new Date(Long.parseLong(fromItem));
+                            Date dateFrom = new Date(fromItem);
                             if (weekS.format(dateFrom).equals(weekS.format(currDate))) {
                                 byDate.add(expenses.get(i));
                             }

@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.AddExpenseActivity;
 import com.yorkismine.expenseapp.AddExpenseBottomDialog;
-import com.yorkismine.expenseapp.MainActivity;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
@@ -61,7 +60,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
-
+        expenseViewModel = ViewModelProviders.of(HomeFragment.this).get(ExpenseViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         //Add  buttons to sorting by
@@ -71,7 +70,14 @@ public class HomeFragment extends Fragment {
 
         //Define dropdown Spinner
         final String[] data = {"Month", "Today", "Week", "Year"};
-        mAdapter = homeViewModel.getGridAdapter(root, data);
+        mAdapter = new ArrayAdapter<String>(root.getContext(), R.layout.support_simple_spinner_dropdown_item, data) {
+            //Set textColor
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView tv = (TextView) super.getView(position, convertView, parent);
+                tv.setTextColor(parent.getResources().getColor(R.color.colorPrimary));
+                return tv;
+            }
+        };
 
         Spinner spinner = root.findViewById(R.id.home_spinner);
         spinner.setAdapter(mAdapter);
@@ -81,10 +87,82 @@ public class HomeFragment extends Fragment {
         final ExpenseAdapter adapter = new ExpenseAdapter();
         recyclerView.setAdapter(adapter);
 
+        btnByDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expenseViewModel.sort(0);
+            }
+        });
+        btnByName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expenseViewModel.sort(1);
+            }
+        });
+        btnBySum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expenseViewModel.sort(2);
+            }
+        });
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(final AdapterView<?> parent, View view, final int position, long id) {
-                homeViewModel.setupSpinner(parent, position, HomeFragment.this, adapter, btnBySum, btnByName, btnByDate);
+
+
+                expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
+                    @Override
+                    public void onChanged(final List<Expense> expenses) {
+                        final List<Expense> byDate = new ArrayList<>();
+                        Date currDate = new Date();
+
+                        for (int i = 0; i < expenses.size(); i++) {
+
+                            String currentDate = parent.getItemAtPosition(position).toString();
+                            long fromItem = expenses.get(i).getDate();
+
+                            switch (currentDate) {
+                                case "Month": {
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat monthS = new SimpleDateFormat("MM");
+                                    Date dateFrom = new Date(fromItem);
+                                    if (monthS.format(dateFrom).equals(monthS.format(currDate))) {
+                                        byDate.add(expenses.get(i));
+                                    }
+                                    break;
+                                }
+                                case "Year": {
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat yearS = new SimpleDateFormat("yy");
+                                    Date dateFrom = new Date(fromItem);
+                                    if (yearS.format(dateFrom).equals(yearS.format(currDate))) {
+                                        byDate.add(expenses.get(i));
+                                    }
+                                    break;
+                                }
+                                case "Today": {
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat dayS = new SimpleDateFormat("dd MM yy");
+                                    Date dateFrom = new Date(fromItem);
+                                    if (dayS.format(dateFrom).equals(dayS.format(currDate))) {
+                                        byDate.add(expenses.get(i));
+                                    }
+                                    break;
+                                }
+                                case "Week": {
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat weekS = new SimpleDateFormat("w");
+                                    Date dateFrom = new Date(fromItem);
+                                    if (weekS.format(dateFrom).equals(weekS.format(currDate))) {
+                                        byDate.add(expenses.get(i));
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                        adapter.setExpenses(byDate);
+
+                        // Add sorting by request
+
+                    }
+                });
             }
 
             @Override
@@ -117,9 +195,42 @@ public class HomeFragment extends Fragment {
             }
         }).attachToRecyclerView(recyclerView);
 
-
         return root;
     }
 
+    private List<Expense> sortByDate(List<Expense> byDate) {
+        Collections.sort(byDate, new Comparator<Expense>() {
+            @Override
+            public int compare(Expense o1, Expense o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+        return byDate;
+    }
 
+    private List<Expense> sortByName(List<Expense> byDate) {
+        Collections.sort(byDate, new Comparator<Expense>() {
+            @Override
+            public int compare(Expense o1, Expense o2) {
+                return o1.getTitle().compareTo(o2.getTitle());
+            }
+        });
+        return byDate;
+    }
+
+    private List<Expense> sortBySum(List<Expense> byDate) {
+        Collections.sort(byDate, new Comparator<Expense>() {
+            @Override
+            public int compare(Expense o1, Expense o2) {
+                return o1.getSum().compareTo(o2.getSum());
+            }
+        });
+        return byDate;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
 }

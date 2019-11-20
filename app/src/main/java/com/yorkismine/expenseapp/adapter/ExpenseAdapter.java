@@ -49,7 +49,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         }
 
         //Get date in  milliseconds
-        long dateInMillis = Long.parseLong(expense.getDate());
+        long dateInMillis = expense.getDate();
         //Convert date to date format
         Date date = new Date(dateInMillis);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat s = new SimpleDateFormat("dd MMM yyyy");
@@ -59,7 +59,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
             sum = "0 " + EXTRA_CURRENCY;
             holder.tvSum.setText(sum);
         } else {
-            sum = expense.getSum();
+            sum = expense.getSum() + EXTRA_CURRENCY; //ToDo сделать нужную валюту
             String currency = expense.getCurrency();
             double d = Double.valueOf(expense.getSum());
             int sumInt = (int) d;

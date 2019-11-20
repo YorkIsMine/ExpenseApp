@@ -1,9 +1,7 @@
 package com.yorkismine.expenseapp;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,11 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.yorkismine.expenseapp.dialog.TypeDialog;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
@@ -34,15 +29,10 @@ import com.yorkismine.expenseapp.singleton.ExpenseUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON_DESC;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
 
 public class AddExpenseBottomDialog extends BottomSheetDialogFragment {
     private ExpenseViewModel expenseViewModel;
@@ -57,7 +47,7 @@ public class AddExpenseBottomDialog extends BottomSheetDialogFragment {
     private ImageView typeImgExpense;
 
     private String date;
-    private String dateInMillis;
+    private long dateInMillis;
     private TextView tvCurrency;
     private TextView tvDate;
     private ArrayList<TypeOfExpense> types = ExpenseUtil.getTypes();
@@ -85,7 +75,7 @@ public class AddExpenseBottomDialog extends BottomSheetDialogFragment {
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
         Calendar mCalendar = Calendar.getInstance();
         date = sdf.format(mCalendar.getTime());
-        dateInMillis = String.valueOf(mCalendar.getTimeInMillis());
+        dateInMillis = mCalendar.getTimeInMillis();
         tvDate.setText(date);
 
         typeExpense.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +98,7 @@ public class AddExpenseBottomDialog extends BottomSheetDialogFragment {
                         Calendar mCalendar = new GregorianCalendar(i, i1, i2);
                         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy");
                         date = sdf.format(mCalendar.getTime());
-                        dateInMillis = String.valueOf(mCalendar.getTimeInMillis());
+                        dateInMillis = mCalendar.getTimeInMillis();
                         tvDate.setText(date);
                     }
                 }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
@@ -145,14 +135,14 @@ public class AddExpenseBottomDialog extends BottomSheetDialogFragment {
             return;
         }
 
-        if (title.trim().isEmpty() || desc.trim().isEmpty() || sum.isEmpty() || dateInMillis.isEmpty() || typeDesc.trim().isEmpty()) {
+        if (title.trim().isEmpty() || desc.trim().isEmpty() || sum.isEmpty() || typeDesc.trim().isEmpty()) {
             Toast.makeText(getActivity(), "Insert all fields!", Toast.LENGTH_SHORT)
                     .show();
             return;
         }
         
 
-        Expense expense = new Expense(title, desc, sum, EXTRA_CURRENCY, dateInMillis, icon, typeDesc);
+        Expense expense = new Expense(0, title, desc, Integer.parseInt(sum), EXTRA_CURRENCY, dateInMillis, icon, typeDesc);
         expenseViewModel.insert(expense);
 
         this.dismiss();

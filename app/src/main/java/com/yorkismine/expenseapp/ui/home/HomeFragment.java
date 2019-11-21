@@ -91,61 +91,37 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
+            @Override
+            public void onChanged(List<Expense> expenses) {
+                adapter.setExpenses(expenses);
+            }
+        });
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(final AdapterView<?> parent, View view, final int position, long id) {
+                String currentDate = parent.getItemAtPosition(position).toString();
 
-
-                expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
-                    @Override
-                    public void onChanged(final List<Expense> expenses) {
-                        for (int i = 0; i < expenses.size(); i++) {
-                            final List<Expense> byDate = new ArrayList<>();
-                            Date currDate = new Date();
-
-
-                            String currentDate = parent.getItemAtPosition(position).toString();
-                            long fromItem = expenses.get(i).getDate();
-
-                            switch (currentDate) {
-                                case "Month": {
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat monthS = new SimpleDateFormat("MM");
-                                    Date dateFrom = new Date(fromItem);
-                                    if (monthS.format(dateFrom).equals(monthS.format(currDate))) {
-                                        byDate.add(expenses.get(i));
-                                    }
-                                    break;
-                                }
-                                case "Year": {
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat yearS = new SimpleDateFormat("yy");
-                                    Date dateFrom = new Date(fromItem);
-                                    if (yearS.format(dateFrom).equals(yearS.format(currDate))) {
-                                        byDate.add(expenses.get(i));
-                                    }
-                                    break;
-                                }
-                                case "Today": {
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat dayS = new SimpleDateFormat("dd MM yy");
-                                    Date dateFrom = new Date(fromItem);
-                                    if (dayS.format(dateFrom).equals(dayS.format(currDate))) {
-                                        byDate.add(expenses.get(i));
-                                    }
-                                    break;
-                                }
-                                case "Week": {
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat weekS = new SimpleDateFormat("w");
-                                    Date dateFrom = new Date(fromItem);
-                                    if (weekS.format(dateFrom).equals(weekS.format(currDate))) {
-                                        byDate.add(expenses.get(i));
-                                    }
-                                    break;
-                                }
-                            }
-                            adapter.setExpenses(byDate);
-                        }
-
+                switch (currentDate) {
+                    case "Month": {
+                        expenseViewModel.filter(ExpenseViewModel.SHOW_BY_MONTH);
+                        break;
                     }
-                });
+                    case "Year": {
+                        expenseViewModel.filter(ExpenseViewModel.SHOW_BY_YEAR);
+                        break;
+                    }
+                    case "Today": {
+                        expenseViewModel.filter(ExpenseViewModel.SHOW_BY_DAY);
+                        break;
+                    }
+                    case "Week": {
+                        expenseViewModel.filter(ExpenseViewModel.SHOW_BY_WEEK);
+                        break;
+                    }
+                }
+
             }
 
             @Override

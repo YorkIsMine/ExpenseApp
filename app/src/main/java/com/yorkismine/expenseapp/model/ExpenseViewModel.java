@@ -1,6 +1,7 @@
 package com.yorkismine.expenseapp.model;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
@@ -9,6 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -36,20 +38,27 @@ public class ExpenseViewModel extends AndroidViewModel {
 
     public ExpenseViewModel(@NonNull Application application) {
         super(application);
-        allExpenses = Transformations.switchMap(mutableLiveData, new Function<Integer, LiveData<List<Expense>>>() {
+        repository = new ExpenseRepository();
+        ConditionLiveData conditionLiveData = new ConditionLiveData(mutableLiveData, periodLiveData);
+        allExpenses = Transformations.switchMap(conditionLiveData, new Function<Integer, LiveData<List<Expense>>>() {
             @Override
             public LiveData<List<Expense>> apply(Integer input) {
                 int comparator = input & 3;
                 int filter = (input >> 2) << 2;
                 final Comparator<Expense> expenseComparator = getComparatorByType(comparator);
-
+                final Conditions<Expense> expenseConditions = FilterUtils.INSTANCE.getConditionByType(filter);
                 return Transformations.map(repository.getAllExpenses(), new Function<List<Expense>, List<Expense>>() {
 
                     @Override
                     public List<Expense> apply(List<Expense> input) {
-
-                        Collections.sort(input, expenseComparator);
-                        return input;
+                        List<Expense> buf = new ArrayList<>();
+                        for(Expense e: input){
+                            if(expenseConditions.check(e)){
+                                buf.add(e);
+                            }
+                        }
+                        Collections.sort(buf, expenseComparator);
+                        return buf;
                     }
                 });
             }
@@ -112,25 +121,6 @@ public class ExpenseViewModel extends AndroidViewModel {
             default:
                 return null;    //ToDo вернуть дефолтный компаратор
         }
-    }
-
-    private Conditions<Expense> getFilterByType(int type) {
-        switch (type) {
-            case SHOW_BY_DAY:
-                return null;
-            case SHOW_BY_WEEK:
-                return null;
-            case SHOW_BY_MONTH:
-                return null;
-            case SHOW_BY_YEAR:
-                return null;
-            default:
-                return null;
-        }
-    }
-
-    interface Conditions<E> {
-        boolean compare(E a);
     }
 
 }

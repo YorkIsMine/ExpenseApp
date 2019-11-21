@@ -13,8 +13,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.yorkismine.expenseapp.utils.Constants.TYPE_DATE;
+import static com.yorkismine.expenseapp.utils.Constants.TYPE_NAME;
+import static com.yorkismine.expenseapp.utils.Constants.TYPE_SUM;
 
-//Он уже ж не нужен
+
 public class ExpenseViewModel extends AndroidViewModel {
     private ExpenseRepository repository;
     private LiveData<List<Expense>> allExpenses;
@@ -72,14 +75,14 @@ public class ExpenseViewModel extends AndroidViewModel {
 
     private Comparator<Expense> getComparatorByType(int type) {
         switch (type) {
-            case 0:
+            case TYPE_DATE:
                 return new Comparator<Expense>() {
                     @Override
                     public int compare(Expense expense, Expense t1) {
                         return expense.getDate().compareTo(t1.getDate());
                     }
                 };
-            case 1:
+            case TYPE_NAME:
                 return new Comparator<Expense>() {
                     @Override
                     public int compare(Expense expense, Expense t1) {
@@ -87,7 +90,7 @@ public class ExpenseViewModel extends AndroidViewModel {
                     }
 
                 };
-            case 2:
+            case TYPE_SUM:
                 return new Comparator<Expense>() {
                     @Override
                     public int compare(Expense expense, Expense t1) {

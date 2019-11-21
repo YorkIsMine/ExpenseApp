@@ -1,8 +1,6 @@
 package com.yorkismine.expenseapp.ui.home;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.yorkismine.expenseapp.AddExpenseActivity;
 import com.yorkismine.expenseapp.AddExpenseBottomDialog;
 import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
@@ -33,33 +29,22 @@ import com.yorkismine.expenseapp.model.ExpenseViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
-import static com.yorkismine.expenseapp.utils.Constants.DEFAULT_VALUE;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CODE_REQUEST;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DATE;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_DESC;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_ICON_DESC;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_SUM;
-import static com.yorkismine.expenseapp.utils.Constants.EXTRA_TITLE;
+
+import static com.yorkismine.expenseapp.utils.Constants.TYPE_DATE;
+import static com.yorkismine.expenseapp.utils.Constants.TYPE_NAME;
+import static com.yorkismine.expenseapp.utils.Constants.TYPE_SUM;
 
 public class HomeFragment extends Fragment {
 
     private ArrayAdapter mAdapter;
-    private HomeViewModel homeViewModel;
     private ExpenseViewModel expenseViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+
         expenseViewModel = ViewModelProviders.of(HomeFragment.this).get(ExpenseViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
 
@@ -90,19 +75,19 @@ public class HomeFragment extends Fragment {
         btnByDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expenseViewModel.sort(0);
+                expenseViewModel.sort(TYPE_DATE);
             }
         });
         btnByName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expenseViewModel.sort(1);
+                expenseViewModel.sort(TYPE_NAME);
             }
         });
         btnBySum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expenseViewModel.sort(2);
+                expenseViewModel.sort(TYPE_SUM);
             }
         });
 
@@ -114,10 +99,10 @@ public class HomeFragment extends Fragment {
                 expenseViewModel.getAllExpenses().observe(HomeFragment.this, new Observer<List<Expense>>() {
                     @Override
                     public void onChanged(final List<Expense> expenses) {
-                        final List<Expense> byDate = new ArrayList<>();
-                        Date currDate = new Date();
-
                         for (int i = 0; i < expenses.size(); i++) {
+                            final List<Expense> byDate = new ArrayList<>();
+                            Date currDate = new Date();
+
 
                             String currentDate = parent.getItemAtPosition(position).toString();
                             long fromItem = expenses.get(i).getDate();
@@ -156,10 +141,8 @@ public class HomeFragment extends Fragment {
                                     break;
                                 }
                             }
+                            adapter.setExpenses(byDate);
                         }
-                        adapter.setExpenses(byDate);
-
-                        // Add sorting by request
 
                     }
                 });
@@ -198,39 +181,5 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    private List<Expense> sortByDate(List<Expense> byDate) {
-        Collections.sort(byDate, new Comparator<Expense>() {
-            @Override
-            public int compare(Expense o1, Expense o2) {
-                return o1.getDate().compareTo(o2.getDate());
-            }
-        });
-        return byDate;
-    }
 
-    private List<Expense> sortByName(List<Expense> byDate) {
-        Collections.sort(byDate, new Comparator<Expense>() {
-            @Override
-            public int compare(Expense o1, Expense o2) {
-                return o1.getTitle().compareTo(o2.getTitle());
-            }
-        });
-        return byDate;
-    }
-
-    private List<Expense> sortBySum(List<Expense> byDate) {
-        Collections.sort(byDate, new Comparator<Expense>() {
-            @Override
-            public int compare(Expense o1, Expense o2) {
-                return o1.getSum().compareTo(o2.getSum());
-            }
-        });
-        return byDate;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-    }
 }

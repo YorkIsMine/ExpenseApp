@@ -1,6 +1,8 @@
-package com.yorkismine.expenseapp.model;
+package com.yorkismine.expenseapp;
 
 import android.app.Application;
+
+import com.yorkismine.expenseapp.model.ExpenseDatabase;
 
 public class ExpenseApplication extends Application {
     @Override

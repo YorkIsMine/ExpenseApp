@@ -2,7 +2,6 @@ package com.yorkismine.expenseapp;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,6 @@ import com.yorkismine.expenseapp.singleton.ExpenseUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;

@@ -1,12 +1,10 @@
 package com.yorkismine.expenseapp.model
 
 import android.annotation.SuppressLint
-import com.yorkismine.expenseapp.model.ExpenseViewModel.SHOW_BY_DAY
-import com.yorkismine.expenseapp.model.ExpenseViewModel.SHOW_BY_MONTH
-import com.yorkismine.expenseapp.model.ExpenseViewModel.SHOW_BY_WEEK
-import com.yorkismine.expenseapp.model.ExpenseViewModel.SHOW_BY_YEAR
+import com.yorkismine.expenseapp.utils.Constants.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.Comparator as Comparator1
 
 object FilterUtils {
 
@@ -75,6 +73,33 @@ object FilterUtils {
             else -> {
                 conditionByMonth
             }
+        }
+    }
+
+    fun getComparatorByType(type: Int): Comparator<Expense>? {
+        val dateComparator = object : Comparator<Expense>{
+            override fun compare(p0: Expense?, p1: Expense?): Int {
+                return (p0!!.date)!!.compareTo(p1!!.date!!)
+            }
+        }
+
+        val nameComparator = object : Comparator<Expense>{
+            override fun compare(p0: Expense?, p1: Expense?): Int {
+                return (p0!!.date)!!.compareTo(p1!!.date!!)
+            }
+        }
+
+        val sumComparator = object : Comparator<Expense>{
+            override fun compare(p0: Expense?, p1: Expense?): Int {
+                return (p0!!.date)!!.compareTo(p1!!.date!!)
+            }
+        }
+
+        return when (type) {
+            SORT_BY_DATE -> dateComparator
+            SORT_BY_NAME -> nameComparator
+            SORT_BY_SUM -> sumComparator
+            else -> null //ToDo вернуть дефолтный компаратор
         }
     }
 }

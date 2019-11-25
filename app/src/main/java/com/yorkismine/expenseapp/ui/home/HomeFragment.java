@@ -26,16 +26,14 @@ import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
+import com.yorkismine.expenseapp.model.FilterUtils;
+import com.yorkismine.expenseapp.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
-import static com.yorkismine.expenseapp.utils.Constants.TYPE_DATE;
-import static com.yorkismine.expenseapp.utils.Constants.TYPE_NAME;
-import static com.yorkismine.expenseapp.utils.Constants.TYPE_SUM;
 
 public class HomeFragment extends Fragment {
 
@@ -75,19 +73,19 @@ public class HomeFragment extends Fragment {
         btnByDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expenseViewModel.sort(TYPE_DATE);
+                expenseViewModel.sort(Constants.SORT_BY_DATE);
             }
         });
         btnByName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expenseViewModel.sort(TYPE_NAME);
+                expenseViewModel.sort(Constants.SORT_BY_NAME);
             }
         });
         btnBySum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                expenseViewModel.sort(TYPE_SUM);
+                expenseViewModel.sort(Constants.SORT_BY_SUM);
             }
         });
 
@@ -105,19 +103,19 @@ public class HomeFragment extends Fragment {
 
                 switch (currentDate) {
                     case "Month": {
-                        expenseViewModel.filter(ExpenseViewModel.SHOW_BY_MONTH);
+                        expenseViewModel.filter(Constants.SHOW_BY_MONTH);
                         break;
                     }
                     case "Year": {
-                        expenseViewModel.filter(ExpenseViewModel.SHOW_BY_YEAR);
+                        expenseViewModel.filter(Constants.SHOW_BY_YEAR);
                         break;
                     }
                     case "Today": {
-                        expenseViewModel.filter(ExpenseViewModel.SHOW_BY_DAY);
+                        expenseViewModel.filter(Constants.SHOW_BY_DAY);
                         break;
                     }
                     case "Week": {
-                        expenseViewModel.filter(ExpenseViewModel.SHOW_BY_WEEK);
+                        expenseViewModel.filter(Constants.SHOW_BY_WEEK);
                         break;
                     }
                 }

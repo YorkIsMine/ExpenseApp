@@ -1,4 +1,6 @@
-package com.yorkismine.expenseapp.model
+package com.yorkismine.expenseapp.exceptions
+
+import com.yorkismine.expenseapp.exceptions.DatabaseException
 
 class DatabaseNotInitializedException(
     message: String = "Database not initialized yet"

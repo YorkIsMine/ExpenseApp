@@ -1,10 +1,11 @@
-package com.yorkismine.expenseapp.model
+package com.yorkismine.expenseapp.utils
 
 import android.annotation.SuppressLint
+import com.yorkismine.expenseapp.model.Conditions
+import com.yorkismine.expenseapp.model.Expense
 import com.yorkismine.expenseapp.utils.Constants.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.Comparator as Comparator1
 
 object FilterUtils {
 
@@ -79,8 +80,8 @@ object FilterUtils {
     fun getComparatorByType(type: Int): Comparator<Expense>? {
         return when (type) {
             SORT_BY_DATE -> Comparator<Expense> { p0, p1 -> (p0!!.date)!!.compareTo(p1!!.date!!) }
-            SORT_BY_NAME -> Comparator<Expense>{p0, p1 -> (p0!!.title)!!.compareTo(p1!!.title!!)}
-            SORT_BY_SUM -> Comparator<Expense>{p0, p1 -> (p0!!.sum)!!.compareTo(p1!!.sum!!)}
+            SORT_BY_NAME -> Comparator<Expense>{ p0, p1 -> (p0!!.title)!!.compareTo(p1!!.title!!)}
+            SORT_BY_SUM -> Comparator<Expense>{ p0, p1 -> (p0!!.sum)!!.compareTo(p1!!.sum!!)}
             else -> null //ToDo вернуть дефолтный компаратор
         }
     }

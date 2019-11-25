@@ -2,12 +2,11 @@ package com.yorkismine.expenseapp.model;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import com.yorkismine.expenseapp.exceptions.DatabaseAlreadyInitializedException;
 
 @Database(entities = {Expense.class}, version = 2, exportSchema = false)
 public abstract class ExpenseDatabase extends RoomDatabase {

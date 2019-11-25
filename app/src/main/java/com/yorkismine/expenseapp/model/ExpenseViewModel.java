@@ -10,7 +10,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
-import com.yorkismine.expenseapp.utils.Constants;
+import com.yorkismine.expenseapp.utils.FilterUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,5 @@
 package com.yorkismine.expenseapp.ui.home;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +25,8 @@ import com.yorkismine.expenseapp.R;
 import com.yorkismine.expenseapp.adapter.ExpenseAdapter;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseViewModel;
-import com.yorkismine.expenseapp.model.FilterUtils;
 import com.yorkismine.expenseapp.utils.Constants;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 

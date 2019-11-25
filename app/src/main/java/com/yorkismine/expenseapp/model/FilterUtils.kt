@@ -77,28 +77,10 @@ object FilterUtils {
     }
 
     fun getComparatorByType(type: Int): Comparator<Expense>? {
-        val dateComparator = object : Comparator<Expense>{
-            override fun compare(p0: Expense?, p1: Expense?): Int {
-                return (p0!!.date)!!.compareTo(p1!!.date!!)
-            }
-        }
-
-        val nameComparator = object : Comparator<Expense>{
-            override fun compare(p0: Expense?, p1: Expense?): Int {
-                return (p0!!.date)!!.compareTo(p1!!.date!!)
-            }
-        }
-
-        val sumComparator = object : Comparator<Expense>{
-            override fun compare(p0: Expense?, p1: Expense?): Int {
-                return (p0!!.date)!!.compareTo(p1!!.date!!)
-            }
-        }
-
         return when (type) {
-            SORT_BY_DATE -> dateComparator
-            SORT_BY_NAME -> nameComparator
-            SORT_BY_SUM -> sumComparator
+            SORT_BY_DATE -> Comparator<Expense> { p0, p1 -> (p0!!.date)!!.compareTo(p1!!.date!!) }
+            SORT_BY_NAME -> Comparator<Expense>{p0, p1 -> (p0!!.title)!!.compareTo(p1!!.title!!)}
+            SORT_BY_SUM -> Comparator<Expense>{p0, p1 -> (p0!!.sum)!!.compareTo(p1!!.sum!!)}
             else -> null //ToDo вернуть дефолтный компаратор
         }
     }

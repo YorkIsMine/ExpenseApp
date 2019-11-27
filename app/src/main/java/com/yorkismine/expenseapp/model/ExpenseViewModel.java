@@ -48,8 +48,8 @@ public class ExpenseViewModel extends AndroidViewModel {
                     @Override
                     public List<Expense> apply(List<Expense> input) {
                         List<Expense> buf = new ArrayList<>();
-                        for(Expense e: input){
-                            if(expenseConditions.check(e)){
+                        for (Expense e : input) {
+                            if (expenseConditions.check(e)) {
                                 buf.add(e);
                             }
                         }

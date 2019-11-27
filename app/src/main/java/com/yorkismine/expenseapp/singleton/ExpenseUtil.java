@@ -19,18 +19,17 @@ public class ExpenseUtil {
         types.add(new TypeOfExpense("Friends", R.drawable.ic_friends));
     }
 
-    private ExpenseUtil(){
+    private ExpenseUtil() {
 
     }
 
-    public static ArrayList<TypeOfExpense> getTypes(){
-
+    public static ArrayList<TypeOfExpense> getTypes() {
         return types;
     }
 
-    public static TypeOfExpense getType(String typeText){
-        for (TypeOfExpense type : types){
-            if (type.getType().equals(typeText)){
+    public static TypeOfExpense getType(String typeText) {
+        for (TypeOfExpense type : types) {
+            if (type.getType().equals(typeText)) {
                 return type;
             }
         }

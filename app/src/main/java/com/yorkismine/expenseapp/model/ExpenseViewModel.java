@@ -34,7 +34,7 @@ public class ExpenseViewModel extends AndroidViewModel {
 
     public ExpenseViewModel(@NonNull Application application) {
         super(application);
-        repository = new ExpenseRepository();
+        repository = new ExpenseRepositoryImpl(application);
         ConditionLiveData conditionLiveData = new ConditionLiveData(sortLiveData, periodLiveData);
         allExpenses = Transformations.switchMap(conditionLiveData, new Function<Integer, LiveData<List<Expense>>>() {
             @Override

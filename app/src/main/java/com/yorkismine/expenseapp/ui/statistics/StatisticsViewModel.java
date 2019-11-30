@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.model.ExpenseRepository;
+import com.yorkismine.expenseapp.model.ExpenseRepositoryImpl;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class StatisticsViewModel extends AndroidViewModel {
 
     public StatisticsViewModel(Application application) {
         super(application);
-        repository = new ExpenseRepository();
+        repository = new ExpenseRepositoryImpl(application);
         allExpenses = repository.getAllExpenses();
     }
 

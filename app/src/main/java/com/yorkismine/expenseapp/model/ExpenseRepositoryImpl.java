@@ -16,7 +16,7 @@ public class ExpenseRepositoryImpl implements ExpenseRepository {
     private ExpenseRepositoryImpl instance;
 
     public ExpenseRepositoryImpl(Context context) {
-        ExpenseDatabase database = ExpenseDatabase.getInstance(context);
+        ExpenseDatabase database = ExpenseDatabase.getInstance();
         expenseDAO = database.expenseDAO();
         allExpenses = expenseDAO.getAllExpenses();
         sortByDate = expenseDAO.sortByDate();

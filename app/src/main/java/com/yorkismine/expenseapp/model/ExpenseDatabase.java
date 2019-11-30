@@ -28,7 +28,7 @@ public abstract class ExpenseDatabase extends RoomDatabase {
     }
 
     public static synchronized ExpenseDatabase getInstance() {
-        if(instance != null)
+        if (instance != null)
             return instance;
         else
             throw new DatabaseAlreadyInitializedException();

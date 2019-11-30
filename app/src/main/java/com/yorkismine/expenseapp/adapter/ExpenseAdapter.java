@@ -79,7 +79,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
         notifyDataSetChanged();
     }
 
-    public Expense expenseAt(int pos){
+    public Expense expenseAt(int pos) {
         return expenses.get(pos);
     }
 

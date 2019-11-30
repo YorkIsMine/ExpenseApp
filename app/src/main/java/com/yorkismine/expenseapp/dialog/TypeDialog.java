@@ -1,7 +1,6 @@
 package com.yorkismine.expenseapp.dialog;
 
 
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,7 +38,7 @@ public class TypeDialog extends DialogFragment implements DismissListener {
         View view = inflater.inflate(R.layout.dialog_type, container, false);
         GridView gridView = view.findViewById(R.id.dialog_grid);
         ArrayList<Integer> images = new ArrayList<>();
-        for(TypeOfExpense type : types){
+        for (TypeOfExpense type : types) {
             images.add(type.getImageView());
             Log.e("ICON", type.getImageView() + "");
         }

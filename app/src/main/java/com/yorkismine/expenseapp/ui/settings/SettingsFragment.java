@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
@@ -12,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.yorkismine.expenseapp.R;
+import com.yorkismine.expenseapp.utils.Constants;
 
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_EUR;
@@ -40,48 +40,40 @@ public class SettingsFragment extends Fragment {
 
         checkCurrency();
 
-        usd.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (usd.isChecked()) {
-                    EXTRA_CURRENCY = EXTRA_CURRENCY_USD;
-                    rub.setChecked(false);
-                    yen.setChecked(false);
-                    eur.setChecked(false);
-                }
+        usd.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (usd.isChecked()) {
+                EXTRA_CURRENCY = EXTRA_CURRENCY_USD;
+                rub.setChecked(false);
+                yen.setChecked(false);
+                eur.setChecked(false);
+                notificationsViewModel.saveCurrency(Constants.USD_KEY, EXTRA_CURRENCY_USD);
             }
         });
-        rub.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (rub.isChecked()) {
-                    EXTRA_CURRENCY = EXTRA_CURRENCY_RUB;
-                    usd.setChecked(false);
-                    yen.setChecked(false);
-                    eur.setChecked(false);
-                }
+        rub.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (rub.isChecked()) {
+                EXTRA_CURRENCY = EXTRA_CURRENCY_RUB;
+                usd.setChecked(false);
+                yen.setChecked(false);
+                eur.setChecked(false);
+                notificationsViewModel.saveCurrency(Constants.RUB_KEY, EXTRA_CURRENCY_RUB);
             }
         });
-        yen.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (yen.isChecked()) {
-                    EXTRA_CURRENCY = EXTRA_CURRENCY_YEN;
-                    usd.setChecked(false);
-                    rub.setChecked(false);
-                    eur.setChecked(false);
-                }
+        yen.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (yen.isChecked()) {
+                EXTRA_CURRENCY = EXTRA_CURRENCY_YEN;
+                usd.setChecked(false);
+                rub.setChecked(false);
+                eur.setChecked(false);
+                notificationsViewModel.saveCurrency(Constants.JPA_KEY, EXTRA_CURRENCY_YEN);
             }
         });
-        eur.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (eur.isChecked()) {
-                    EXTRA_CURRENCY = EXTRA_CURRENCY_EUR;
-                    usd.setChecked(false);
-                    rub.setChecked(false);
-                    yen.setChecked(false);
-                }
+        eur.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (eur.isChecked()) {
+                EXTRA_CURRENCY = EXTRA_CURRENCY_EUR;
+                usd.setChecked(false);
+                rub.setChecked(false);
+                yen.setChecked(false);
+                notificationsViewModel.saveCurrency(Constants.EURO_KEY, EXTRA_CURRENCY_EUR);
             }
         });
         return root;

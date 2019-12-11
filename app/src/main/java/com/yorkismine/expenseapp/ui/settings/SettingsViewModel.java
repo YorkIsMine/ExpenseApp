@@ -1,17 +1,21 @@
 package com.yorkismine.expenseapp.ui.settings;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 
-public class SettingsViewModel extends ViewModel {
+public class SettingsViewModel extends AndroidViewModel {
+    private SettingsRepository repository;
 
-    private MutableLiveData<List<String>> mCurrencies;
-
-    public LiveData<List<String>> getCurrencies() {
-        return mCurrencies;
+    public SettingsViewModel(@NonNull Application application) {
+        super(application);
+        repository = SettingsRepository.getInstance(application);
     }
+
+    public void saveCurrency(String currency, String value){
+        repository.saveCurrency(currency, value);
+    }
+
+
 }

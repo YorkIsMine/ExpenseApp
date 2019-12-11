@@ -11,13 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yorkismine.expenseapp.R;
+import com.yorkismine.expenseapp.currency.CurrencyRepo;
 import com.yorkismine.expenseapp.model.Expense;
 import com.yorkismine.expenseapp.singleton.ExpenseUtil;
+import com.yorkismine.expenseapp.singleton.RetrofitSingleton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
+
+import retrofit2.Retrofit;
 
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY;
 import static com.yorkismine.expenseapp.utils.Constants.EXTRA_CURRENCY_EUR;
@@ -103,6 +108,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseH
     }
 
     private void checkCurrency(ExpenseHolder holder, int s, String currency) {
+
+
         if (EXTRA_CURRENCY.equals(currency)) {
             sum = s + EXTRA_CURRENCY;
             holder.tvSum.setText(sum);

@@ -38,6 +38,7 @@ public class ExpenseViewModel extends AndroidViewModel {
         ConditionLiveData conditionLiveData = new ConditionLiveData(sortLiveData, periodLiveData);
         allExpenses = Transformations.switchMap(conditionLiveData, new Function<Integer, LiveData<List<Expense>>>() {
             @Override
+
             public LiveData<List<Expense>> apply(Integer input) {
                 int comparator = input & 3;
                 int filter = (input >> 2) << 2;
@@ -90,6 +91,7 @@ public class ExpenseViewModel extends AndroidViewModel {
     public LiveData<List<Expense>> getAllExpenses() {
         return allExpenses;
     }
+
 
 
 }

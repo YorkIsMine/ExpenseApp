@@ -22,4 +22,9 @@ public class Constants{
     public final static int SHOW_BY_WEEK = 32;
     public final static int SHOW_BY_MONTH = 64;
     public final static int SHOW_BY_YEAR = 128;
+
+    public final static String USD_KEY = "USD_KEY";
+    public final static String RUB_KEY = "RUB_KEY";
+    public final static String JPA_KEY = "JPA_KEY";
+    public final static String EURO_KEY = "EURO_KEY";
 }
